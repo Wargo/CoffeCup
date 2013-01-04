@@ -21,10 +21,37 @@ $.user.on('swipe', function(e) {
 	}
 });
 
+var y = 0;
+
+$.scrollview.on('dragstart', function(e) {
+	y = e.source.contentOffset.y;
+});
+
 $.scrollview.on('dragend', function(e) {
-	if (e.source.contentOffset.y < 200) {
+	if (e.source.contentOffset.y < y) {
 		$.scrollview.scrollTo(0,0);
+		$.messageSenderArea.animate({opacity:1});
 	} else {
 		$.scrollview.scrollToBottom();
+		$.messageSenderArea.animate({opacity:0});
 	}
+});
+
+$.send.title = L('send');
+
+$.messageSenderArea.on('swipe', function(e) {
+	if (e.direction == 'down') {
+		$.messageSenderArea.animate({top:0});
+		$.textarea.enabled = true;
+	} else if (e.direction == 'up') {
+		$.messageSenderArea.animate({top:'-210dp'});
+		$.textarea.enabled = false;
+	}
+});
+
+$.send.on('click', function() {
+	$.textarea.blur();
+	$.textarea.value = '';
+	$.textarea.enabled = false;
+	$.messageSenderArea.animate({top:'-210dp'});
 });

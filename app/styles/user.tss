@@ -44,4 +44,24 @@
 },
 '.talkmeabout': {
 	height:'140dp'
+},
+'#messageSender': {
+	backgroundColor:'#57658D',
+	bottom:'15dp'
+},
+'#messageSenderArea': {
+	height:'250dp',
+	top:'-210dp',
+	zIndex:100,
+},
+'#send': {
+	bottom:0,
+	height:'35dp'
+},
+'#textarea': {
+	left:'10dp',
+	right:'10dp',
+	top:'10dp',
+	bottom:'10dp',
+	enabled:false
 }

@@ -1,6 +1,11 @@
 <Alloy>
 	<Window class="win">
-		<View id="messageSender" />
+		<View id="messageSenderArea">
+			<View id="messageSender">
+				<TextArea id="textarea" />
+			</View>
+			<Button id="send" />
+		</View>
 		<ScrollView id="scrollview">
 			<ImageView id="avatar">
 				<View class="infoHeader">

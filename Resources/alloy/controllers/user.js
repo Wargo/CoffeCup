@@ -9,10 +9,34 @@ function Controller() {
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
-    $.__views.messageSender = A$(Ti.UI.createView({
-        id: "messageSender"
+    $.__views.messageSenderArea = A$(Ti.UI.createView({
+        height: "250dp",
+        top: "-210dp",
+        zIndex: 100,
+        id: "messageSenderArea"
     }), "View", $.__views.user);
-    $.__views.user.add($.__views.messageSender);
+    $.__views.user.add($.__views.messageSenderArea);
+    $.__views.messageSender = A$(Ti.UI.createView({
+        backgroundColor: "#57658D",
+        bottom: "15dp",
+        id: "messageSender"
+    }), "View", $.__views.messageSenderArea);
+    $.__views.messageSenderArea.add($.__views.messageSender);
+    $.__views.textarea = A$(Ti.UI.createTextArea({
+        left: "10dp",
+        right: "10dp",
+        top: "10dp",
+        bottom: "10dp",
+        enabled: !1,
+        id: "textarea"
+    }), "TextArea", $.__views.messageSender);
+    $.__views.messageSender.add($.__views.textarea);
+    $.__views.send = A$(Ti.UI.createButton({
+        bottom: 0,
+        height: "35dp",
+        id: "send"
+    }), "Button", $.__views.messageSenderArea);
+    $.__views.messageSenderArea.add($.__views.send);
     $.__views.scrollview = A$(Ti.UI.createScrollView({
         contentHeight: "auto",
         id: "scrollview"
@@ -235,8 +259,43 @@ function Controller() {
             left: "320dp"
         });
     });
+    var y = 0;
+    $.scrollview.on("dragstart", function(e) {
+        y = e.source.contentOffset.y;
+    });
     $.scrollview.on("dragend", function(e) {
-        e.source.contentOffset.y < 200 ? $.scrollview.scrollTo(0, 0) : $.scrollview.scrollToBottom();
+        if (e.source.contentOffset.y < y) {
+            $.scrollview.scrollTo(0, 0);
+            $.messageSenderArea.animate({
+                opacity: 1
+            });
+        } else {
+            $.scrollview.scrollToBottom();
+            $.messageSenderArea.animate({
+                opacity: 0
+            });
+        }
+    });
+    $.send.title = L("send");
+    $.messageSenderArea.on("swipe", function(e) {
+        if (e.direction == "down") {
+            $.messageSenderArea.animate({
+                top: 0
+            });
+            $.textarea.enabled = !0;
+        } else if (e.direction == "up") {
+            $.messageSenderArea.animate({
+                top: "-210dp"
+            });
+            $.textarea.enabled = !1;
+        }
+    });
+    $.send.on("click", function() {
+        $.textarea.blur();
+        $.textarea.value = "";
+        $.messageSenderArea.animate({
+            top: "-210dp"
+        });
     });
     _.extend($, exports);
 }
