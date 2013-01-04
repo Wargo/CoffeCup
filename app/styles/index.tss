@@ -1,0 +1,5 @@
+'#table':{
+	top:'50dp',
+	backgroundColor:'transparent',
+	separatorColor:'transparent'
+}

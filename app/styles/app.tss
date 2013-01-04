@@ -1,0 +1,12 @@
+'.win':{
+	backgroundColor:'black'
+},
+'.mainHeader':{
+	top:0,
+	height:'50dp',
+	backgroundColor:'#57658D'
+},
+'#headerTitle':{
+	color:'white',
+	font:{fontFamily:'Helvetica Neue', fontSize:'20dp', fontWeight:'bold'}
+}

@@ -1,0 +1,47 @@
+".win": {
+	left:'320dp',
+	width:'320dp'
+},
+'.infoHeader': {
+	backgroundColor:'#8557658D',
+	height:'50dp',
+	bottom:0,
+	layout:'vertical'
+},
+'.infoSteps': {
+	backgroundColor:'#57658D',
+	top:Ti.Platform.displayCaps.platformHeight,
+	layout:'vertical'
+},
+'Label': {
+	color:'white',
+	font:{fontFamily:'Helvetica Neue', fontSize:'16dp'},
+	left:'10dp',
+	right:'10dp'
+},
+'.step': {
+	height:'70dp',
+	borderColor:'#CCC',
+	borderWidth:1
+},
+'#scrollview': {
+	contentHeight:'auto'
+},
+'#avatar': {
+	top:0,
+	height:Ti.Platform.displayCaps.platformHeight,
+	width:'320dp'
+},
+'.right': {
+	textAlign:'right'
+},
+'.top': {
+	top:'10dp'
+},
+'#talkmeabout': {
+	top:'40dp',
+	textAlign:'right'
+},
+'.talkmeabout': {
+	height:'140dp'
+}

@@ -1,0 +1,35 @@
+<Alloy>
+	<Window class="win">
+		<View id="messageSender" />
+		<ScrollView id="scrollview">
+			<ImageView id="avatar">
+				<View class="infoHeader">
+					<Label id="name" />
+					<Label id="charge" />
+				</View>
+			</ImageView>
+			<View class="infoSteps">
+				<View class="step">
+					<Label id="l_birthday" />
+					<Label id="birthday" class="right" />
+				</View>
+				<View class="step">
+					<Label id="l_email" />
+					<Label id="email" class="right" />
+				</View>
+				<View class="step">
+					<Label id="l_mobile" />
+					<Label id="mobile" class="right" />
+				</View>
+				<View class="step talkmeabout">
+					<Label id="l_talkmeabout" class="top" />
+					<Label id="talkmeabout" class="right" />
+				</View>
+				<View class="step">
+					<Label id="l_icomefrom" />
+					<Label id="icomefrom" class="right" />
+				</View>
+			</View>
+		</ScrollView>
+	</Window>
+</Alloy>

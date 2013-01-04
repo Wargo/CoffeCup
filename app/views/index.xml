@@ -1,0 +1,8 @@
+<Alloy>
+	<Window class="win">
+		<View class="mainHeader">
+			<Label id="headerTitle" />
+		</View>
+		<TableView id="table" />
+	</Window>
+</Alloy>
