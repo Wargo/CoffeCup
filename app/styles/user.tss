@@ -47,21 +47,41 @@
 },
 '#messageSender': {
 	backgroundColor:'#57658D',
-	bottom:'15dp'
+	bottom:'25dp'
 },
 '#messageSenderArea': {
 	height:'250dp',
 	top:'-210dp',
-	zIndex:100,
+	zIndex:100
 },
 '#send': {
-	bottom:0,
-	height:'35dp'
+	bottom:'12dp',
+	height:'35dp',
+	width:'70dp',
+	backgroundImage:'none',
+	backgroundColor:'#57658D',
+	borderColor:'#CCC',
+	borderWidth:1
+},
+'#sendImage': {
+	image:'images/send.png'
 },
 '#textarea': {
 	left:'10dp',
 	right:'10dp',
-	top:'10dp',
+	top:'40dp',
 	bottom:'10dp',
 	enabled:false
+},
+'#prev_msg': {
+	top:'5dp',
+	shadowColor:'#333',
+	shadowOffset:{x:1,y:1}
+},
+'#messages': {
+	zIndex:50,
+	opacity:0,
+	bottom:'250dp',
+	backgroundColor:'#9057658D',
+	separatorColor:'transparent'
 }

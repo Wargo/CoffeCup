@@ -8,5 +8,7 @@
 },
 '#headerTitle':{
 	color:'white',
-	font:{fontFamily:'Helvetica Neue', fontSize:'20dp', fontWeight:'bold'}
+	font:{fontFamily:'Helvetica Neue', fontSize:'20dp', fontWeight:'bold'},
+	shadowColor:'#333',
+	shadowOffset:{x:1,y:1}
 }

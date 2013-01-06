@@ -1,10 +1,14 @@
 <Alloy>
 	<Window class="win">
+		<TableView id="messages" />
 		<View id="messageSenderArea">
 			<View id="messageSender">
+				<Label id="prevMsg" class="right top" />
 				<TextArea id="textarea" />
 			</View>
-			<Button id="send" />
+			<View id="send">
+				<ImageView id="sendImage" />
+			</View>
 		</View>
 		<ScrollView id="scrollview">
 			<ImageView id="avatar">

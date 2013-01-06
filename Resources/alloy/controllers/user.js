@@ -9,6 +9,15 @@ function Controller() {
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
+    $.__views.messages = A$(Ti.UI.createTableView({
+        zIndex: 50,
+        opacity: 0,
+        bottom: "250dp",
+        backgroundColor: "#9057658D",
+        separatorColor: "transparent",
+        id: "messages"
+    }), "TableView", $.__views.user);
+    $.__views.user.add($.__views.messages);
     $.__views.messageSenderArea = A$(Ti.UI.createView({
         height: "250dp",
         top: "-210dp",
@@ -18,25 +27,48 @@ function Controller() {
     $.__views.user.add($.__views.messageSenderArea);
     $.__views.messageSender = A$(Ti.UI.createView({
         backgroundColor: "#57658D",
-        bottom: "15dp",
+        bottom: "25dp",
         id: "messageSender"
     }), "View", $.__views.messageSenderArea);
     $.__views.messageSenderArea.add($.__views.messageSender);
+    $.__views.prevMsg = A$(Ti.UI.createLabel({
+        color: "white",
+        font: {
+            fontFamily: "Helvetica Neue",
+            fontSize: "16dp"
+        },
+        left: "10dp",
+        right: "10dp",
+        textAlign: "right",
+        top: "10dp",
+        id: "prevMsg"
+    }), "Label", $.__views.messageSender);
+    $.__views.messageSender.add($.__views.prevMsg);
     $.__views.textarea = A$(Ti.UI.createTextArea({
         left: "10dp",
         right: "10dp",
-        top: "10dp",
+        top: "40dp",
         bottom: "10dp",
         enabled: !1,
         id: "textarea"
     }), "TextArea", $.__views.messageSender);
     $.__views.messageSender.add($.__views.textarea);
-    $.__views.send = A$(Ti.UI.createButton({
-        bottom: 0,
+    $.__views.send = A$(Ti.UI.createView({
+        bottom: "12dp",
         height: "35dp",
+        width: "70dp",
+        backgroundImage: "none",
+        backgroundColor: "#57658D",
+        borderColor: "#CCC",
+        borderWidth: 1,
         id: "send"
-    }), "Button", $.__views.messageSenderArea);
+    }), "View", $.__views.messageSenderArea);
     $.__views.messageSenderArea.add($.__views.send);
+    $.__views.sendImage = A$(Ti.UI.createImageView({
+        image: "images/send.png",
+        id: "sendImage"
+    }), "ImageView", $.__views.send);
+    $.__views.send.add($.__views.sendImage);
     $.__views.scrollview = A$(Ti.UI.createScrollView({
         contentHeight: "auto",
         id: "scrollview"
@@ -254,6 +286,71 @@ function Controller() {
     $.l_birthday.text = L("birthday");
     $.l_talkmeabout.text = L("talkmeabout");
     $.l_icomefrom.text = L("icomefrom");
+    $.prevMsg.text = L("prev_msg");
+    var messagesData = [ {
+        id: 1,
+        me: !0,
+        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
+    }, {
+        id: 1,
+        me: !1,
+        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
+    }, {
+        id: 1,
+        me: !1,
+        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
+    }, {
+        id: 1,
+        me: !0,
+        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
+    }, {
+        id: 1,
+        me: !1,
+        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
+    }, {
+        id: 1,
+        me: !0,
+        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
+    } ], messages = [];
+    for (i in messagesData) {
+        var message = Ti.UI.createView({
+            borderColor: "#CCC",
+            borderWidth: 1,
+            borderRadius: 10,
+            height: Ti.UI.SIZE,
+            top: "10dp",
+            bottom: "10dp"
+        });
+        message.add(Ti.UI.createLabel({
+            text: messagesData[i].message,
+            left: "10dp",
+            right: "10dp",
+            top: "10dp",
+            bottom: "10dp",
+            height: "auto",
+            font: {
+                fontFamily: "Helvetica Neue",
+                fontSize: "16dp"
+            },
+            color: "#FFF"
+        }));
+        if (messagesData[i].me) {
+            message.backgroundColor = "#50BFFFEF";
+            message.right = "10dp";
+            message.left = "80dp";
+        } else {
+            message.backgroundColor = "#507B89A6";
+            message.right = "80dp";
+            message.left = "10dp";
+        }
+        var row = Ti.UI.createTableViewRow({
+            selectionStyle: Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
+            height: Ti.UI.SIZE
+        });
+        row.add(message);
+        messages.push(row);
+    }
+    $.messages.appendRow(messages);
     $.user.on("swipe", function(e) {
         e.direction == "right" && $.user.close({
             left: "320dp"
@@ -276,7 +373,6 @@ function Controller() {
             });
         }
     });
-    $.send.title = L("send");
     $.messageSenderArea.on("swipe", function(e) {
         if (e.direction == "down") {
             $.messageSenderArea.animate({
@@ -290,11 +386,64 @@ function Controller() {
             $.textarea.enabled = !1;
         }
     });
-    $.send.on("click", function() {
+    $.send.on("singletap", function() {
         $.textarea.blur();
         $.textarea.value = "";
+        $.textarea.enabled = !1;
         $.messageSenderArea.animate({
             top: "-210dp"
+        });
+    });
+    $.prevMsg.on("singletap", function() {
+        if ($.prevMsg.text == L("close")) {
+            $.messages.animate({
+                opacity: 0
+            });
+            $.messageSenderArea.animate({
+                top: "-210dp"
+            });
+            $.prevMsg.text = L("prev_msg");
+            $.textarea.blur();
+            $.textarea.value = "";
+            $.textarea.enabled = !1;
+        } else {
+            $.messages.animate({
+                opacity: 1
+            });
+            $.messageSenderArea.animate({
+                top: Ti.Platform.displayCaps.platformHeight - 250 + "dp"
+            });
+            $.prevMsg.text = L("close");
+        }
+    });
+    $.textarea.on("postlayout", function() {
+        $.textarea.setShadow({
+            shadowOffset: {
+                x: 0,
+                y: 2
+            },
+            shadowOpacity: 0.2,
+            shadowRadius: 2
+        });
+    });
+    $.send.on("postlayout", function() {
+        $.send.setShadow({
+            shadowOffset: {
+                x: 3,
+                y: 3
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: 3
+        });
+    });
+    $.messageSender.on("postlayout", function() {
+        $.messageSender.setShadow({
+            shadowOffset: {
+                x: 0,
+                y: 3
+            },
+            shadowOpacity: 0.3,
+            shadowRadius: 3
         });
     });
     _.extend($, exports);

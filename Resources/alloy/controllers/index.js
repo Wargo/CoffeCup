@@ -2,9 +2,10 @@ function Controller() {
     function setData(data) {
         var rows = [];
         for (i in data) {
-            var user = Ti.UI.createImageView({
-                image: data[i].img_p,
+            var user = Ti.UI.createButton({
+                backgroundImage: data[i].img_p,
                 width: "100dp",
+                height: "165dp",
                 left: "5dp",
                 top: "5dp",
                 _data: data[i]
@@ -18,7 +19,7 @@ function Controller() {
                 var row = Ti.UI.createTableViewRow({
                     layout: "horizontal",
                     selectionStyle: Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
-                    height: "171.57dp"
+                    height: "170dp"
                 });
                 rows.push(row);
             }
@@ -48,6 +49,11 @@ function Controller() {
             fontSize: "20dp",
             fontWeight: "bold"
         },
+        shadowColor: "#333",
+        shadowOffset: {
+            x: 1,
+            y: 1
+        },
         id: "headerTitle"
     }), "Label", $.__views.__alloyId1);
     $.__views.__alloyId1.add($.__views.headerTitle);
@@ -60,6 +66,7 @@ function Controller() {
     $.__views.index.add($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    require("ti.viewshadow");
     $.headerTitle.text = L("¿Quién es quién?");
     var getData = require("users");
     getData(setData);
