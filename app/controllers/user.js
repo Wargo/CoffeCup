@@ -116,15 +116,17 @@ $.send.on('singletap', function() {
 
 $.prevMsg.on('singletap', function() {
 	if ($.prevMsg.text == L('close')) {
-		$.messages.animate({opacity:0});
-		$.messageSenderArea.animate({top:'-210dp'});
+		$.messageSenderArea.animate({top:'-210dp'}, function(){
+			$.messages.animate({opacity:0});
+		});
 		$.prevMsg.text = L('prev_msg');
 		$.textarea.blur();
 		$.textarea.value = '';
 		$.textarea.enabled = false;
 	} else {
-		$.messages.animate({opacity:1});
-		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 250) + 'dp'});
+		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 250) + 'dp'}, function(){
+			$.messages.animate({opacity:1});
+		});
 		$.prevMsg.text = L('close');
 	}
 });
