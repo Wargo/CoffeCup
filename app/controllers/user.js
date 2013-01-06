@@ -1,5 +1,3 @@
-//require('ti.viewshadow');
-
 var args = arguments[0] || {};
 
 $.avatar.image = args.img_p;
@@ -32,42 +30,7 @@ var messages = [];
 
 for (i in messagesData) {
 	
-	var message = Ti.UI.createView({
-		borderColor:'#CCC',
-		borderWidth:1,
-		borderRadius:10,
-		height:Ti.UI.SIZE,
-		top:'10dp',
-		bottom:'10dp'
-	});
-	
-	message.add(Ti.UI.createLabel({
-		text:messagesData[i].message,
-		left:'10dp',
-		right:'10dp',
-		top:'10dp',
-		bottom:'10dp',
-		height:'auto',
-		font:{fontFamily:'Helvetica Neue', fontSize:'16dp'},
-		color:'#FFF'
-	}));
-	
-	if (messagesData[i].me) {
-		message.backgroundColor = '#50BFFFEF';
-		message.right = '10dp';
-		message.left = '80dp';
-	} else {
-		message.backgroundColor = '#507B89A6';
-		message.right = '80dp';
-		message.left = '10dp';
-	}
-	
-	var row = Ti.UI.createTableViewRow({
-		selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
-		height:Ti.UI.SIZE
-	});
-	
-	row.add(message);
+	var row = Alloy.createController('message', messagesData[i]).getView();
 	
 	messages.push(row);
 	
