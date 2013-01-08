@@ -1,4 +1,4 @@
-".win": {
+".win[platform=ios]": {
 	left:'320dp',
 	width:'320dp'
 },

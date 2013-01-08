@@ -65,13 +65,15 @@ $.messageSenderArea.on('swipe', function(e) {
 		$.messageSenderArea.animate({top:0});
 		$.textarea.enabled = true;
 	} else if (e.direction == 'up') {
-		$.messageSenderArea.animate({top:'-210dp'});
+		$.messageSenderArea.animate({top:'-210dp'}, function() {
+			$.messages.animate({opacity:0});
+			$.prevMsg.text = L('prev_msg');
+		});
 		$.textarea.enabled = false;
 	}
 });
 
 $.send.on('singletap', function() {
-	$.textarea.blur();
 	$.textarea.value = '';
 	$.textarea.enabled = false;
 	$.messageSenderArea.animate({top:'-210dp'});
@@ -79,41 +81,43 @@ $.send.on('singletap', function() {
 
 $.prevMsg.on('singletap', function() {
 	if ($.prevMsg.text == L('close')) {
-		$.messageSenderArea.animate({top:'-210dp'}, function(){
-			$.messages.animate({opacity:0});
+		$.messages.animate({opacity:0}, function() {
+			$.messageSenderArea.animate({top:'-210dp'}, function() {
+				$.prevMsg.text = L('prev_msg');
+			});
 		});
-		$.prevMsg.text = L('prev_msg');
-		$.textarea.blur();
 		$.textarea.value = '';
 		$.textarea.enabled = false;
 	} else {
-		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 250) + 'dp'}, function(){
+		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 250) + 'dp'}, function() {
 			$.messages.animate({opacity:1});
 		});
 		$.prevMsg.text = L('close');
 	}
 });
 
-$.textarea.on('postlayout', function() {
-	$.textarea.setShadow({
-		shadowOffset:{x:0,y:2},
-		shadowOpacity:0.2,
-		shadowRadius:2
+if (Ti.Platform.osname != 'android') {
+	$.textarea.on('postlayout', function() {
+		$.textarea.setShadow({
+			shadowOffset:{x:0,y:2},
+			shadowOpacity:0.2,
+			shadowRadius:2
+		});
 	});
-});
-
-$.send.on('postlayout', function() {
-	$.send.setShadow({
-		shadowOffset:{x:3,y:3},
-		shadowOpacity:0.3,
-		shadowRadius:3
+	
+	$.send.on('postlayout', function() {
+		$.send.setShadow({
+			shadowOffset:{x:3,y:3},
+			shadowOpacity:0.3,
+			shadowRadius:3
+		});
 	});
-});
-
-$.messageSender.on('postlayout', function() {
-	$.messageSender.setShadow({
-		shadowOffset:{x:0,y:3},
-		shadowOpacity:0.3,
-		shadowRadius:3
+	
+	$.messageSender.on('postlayout', function() {
+		$.messageSender.setShadow({
+			shadowOffset:{x:0,y:3},
+			shadowOpacity:0.3,
+			shadowRadius:3
+		});
 	});
-});
+}

@@ -1,4 +1,6 @@
-require('ti.viewshadow');
+if (Ti.Platform.osname != 'android') {
+	require('ti.viewshadow');
+}
 
 $.headerTitle.text = L('¿Quién es quién?');
 
@@ -27,13 +29,18 @@ function setData(data) {
 
 			var row = Ti.UI.createTableViewRow({
 				layout:'horizontal',
-				selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
 				//height:'171.57dp' // Alto proporcional de las fotos si el ancho es 100 ( + 5px del margen )
 				height:'170dp'
 			});
+			
+			if (Ti.Platform.osname != 'android') {
+				row.selectionStyle = Ti.UI.iPhone.TableViewCellSelectionStyle.NONE;
+			}
+			
 			rows.push(row);
 			
 		}
+		
 		row.add(user);
 		
 	}

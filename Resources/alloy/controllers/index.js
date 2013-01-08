@@ -18,7 +18,6 @@ function Controller() {
             if (i % 3 == 0) {
                 var row = Ti.UI.createTableViewRow({
                     layout: "horizontal",
-                    selectionStyle: Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
                     height: "170dp"
                 });
                 rows.push(row);
@@ -66,7 +65,6 @@ function Controller() {
     $.__views.index.add($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    require("ti.viewshadow");
     $.headerTitle.text = L("¿Quién es quién?");
     var getData = require("users");
     getData(setData);

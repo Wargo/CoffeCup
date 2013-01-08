@@ -4,8 +4,6 @@ function Controller() {
     var $ = this, exports = {}, __defers = {};
     $.__views.user = A$(Ti.UI.createWindow({
         backgroundColor: "black",
-        left: "320dp",
-        width: "320dp",
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
@@ -348,12 +346,16 @@ function Controller() {
         } else if (e.direction == "up") {
             $.messageSenderArea.animate({
                 top: "-210dp"
+            }, function() {
+                $.messages.animate({
+                    opacity: 0
+                });
+                $.prevMsg.text = L("prev_msg");
             });
             $.textarea.enabled = !1;
         }
     });
     $.send.on("singletap", function() {
-        $.textarea.blur();
         $.textarea.value = "";
         $.textarea.enabled = !1;
         $.messageSenderArea.animate({
@@ -362,15 +364,15 @@ function Controller() {
     });
     $.prevMsg.on("singletap", function() {
         if ($.prevMsg.text == L("close")) {
-            $.messageSenderArea.animate({
-                top: "-210dp"
+            $.messages.animate({
+                opacity: 0
             }, function() {
-                $.messages.animate({
-                    opacity: 0
+                $.messageSenderArea.animate({
+                    top: "-210dp"
+                }, function() {
+                    $.prevMsg.text = L("prev_msg");
                 });
             });
-            $.prevMsg.text = L("prev_msg");
-            $.textarea.blur();
             $.textarea.value = "";
             $.textarea.enabled = !1;
         } else {
@@ -383,36 +385,6 @@ function Controller() {
             });
             $.prevMsg.text = L("close");
         }
-    });
-    $.textarea.on("postlayout", function() {
-        $.textarea.setShadow({
-            shadowOffset: {
-                x: 0,
-                y: 2
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 2
-        });
-    });
-    $.send.on("postlayout", function() {
-        $.send.setShadow({
-            shadowOffset: {
-                x: 3,
-                y: 3
-            },
-            shadowOpacity: 0.3,
-            shadowRadius: 3
-        });
-    });
-    $.messageSender.on("postlayout", function() {
-        $.messageSender.setShadow({
-            shadowOffset: {
-                x: 0,
-                y: 3
-            },
-            shadowOpacity: 0.3,
-            shadowRadius: 3
-        });
     });
     _.extend($, exports);
 }

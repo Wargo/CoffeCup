@@ -15,7 +15,10 @@
 	font:{fontFamily:'Helvetica Neue', fontSize:'16dp'},
 	color:'#FFF'
 },
-'#row': {
+'#row[platform=ios]': {
 	selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
+	height:Ti.UI.SIZE
+},
+'#row[platform=android]': {
 	height:Ti.UI.SIZE
 }
