@@ -1,5 +1,5 @@
 
-module.exports = function(setData) {
+module.exports = function(user_id, setData) {
 	
 	var client = Ti.Network.createHTTPClient({
 		onload:function() {
@@ -19,11 +19,11 @@ module.exports = function(setData) {
 		timeout:15000
 	});
 	
-	client.open('POST', 'http://www.servidordeprueba.net/webs/coffecup_cake/users/json');
+	client.open('POST', 'http://www.servidordeprueba.net/webs/coffecup_cake/messages/see');
 	
 	client.send({
-		w:Ti.Platform.displayCaps.platformWidth,
-		h:Ti.Platform.displayCaps.platformHeight
+		user_id:Ti.App.Properties.getString('user_id'),
+		to_user_id:user_id
 	});
 		
 }

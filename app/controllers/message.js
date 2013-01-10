@@ -1,6 +1,7 @@
 var args = arguments[0] || {};
 
-$.text.text = args.message;
+$.text.text = args.content;
+$.date.text = args.date;
 
 if (args.me) {
 	$.view.backgroundColor = '#50BFFFEF';

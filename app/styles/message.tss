@@ -9,15 +9,23 @@
 '#text': {
 	left:'10dp',
 	right:'10dp',
-	top:'10dp',
-	bottom:'10dp',
+	top:'20dp',
+	bottom:'5dp',
 	height:'auto',
 	font:{fontFamily:'Helvetica Neue', fontSize:'16dp'},
 	color:'#FFF'
 },
+'#date': {
+	right:'3dp',
+	top:'3dp',
+	//height:'20dp',
+	font:{fontFamily:'Helvetica Neue', fontSize:'12dp'},
+	color:'#CCC'
+},
 '#row[platform=ios]': {
 	selectionStyle:Ti.UI.iPhone.TableViewCellSelectionStyle.NONE,
-	height:Ti.UI.SIZE
+	height:Ti.UI.SIZE,
+	backgroundColor:'transparent'
 },
 '#row[platform=android]': {
 	height:Ti.UI.SIZE

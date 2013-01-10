@@ -2,6 +2,8 @@ if (Ti.Platform.osname != 'android') {
 	require('ti.viewshadow');
 }
 
+Ti.App.Properties.setString('user_id', '50eda1ed-c248-4d14-affb-3415b4188753');
+
 $.headerTitle.text = L('¿Quién es quién?');
 
 var getData = require('users');

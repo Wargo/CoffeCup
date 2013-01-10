@@ -1,5 +1,7 @@
 var args = arguments[0] || {};
 
+var SendMessage = require('addMessage');
+
 $.loader._loaded = false;
 
 $.user.on('open', function() {
@@ -40,17 +42,25 @@ var messagesData = [
 	{id:1, me:true, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'}
 ];
 
-var messages = [];
+var GetMessages = require('messages');
 
-for (i in messagesData) {
+GetMessages(args.id, setMessages);
+
+function setMessages(messagesData) {
 	
-	var row = Alloy.createController('message', messagesData[i]).getView();
+	var messages = [];
 	
-	messages.push(row);
+	for (i in messagesData) {
+		
+		var row = Alloy.createController('message', messagesData[i]).getView();
+		
+		messages.push(row);
+		
+	}
+	
+	$.messages.appendRow(messages);
 	
 }
-
-$.messages.appendRow(messages);
 
 $.user.on('swipe', function(e) {
 	if (e.direction == 'right') {
@@ -88,9 +98,14 @@ $.messageSenderArea.on('swipe', function(e) {
 });
 
 $.send.on('singletap', function() {
+	$.messageSenderArea.animate({top:'-210dp'});
+	SendMessage({
+		user_id:Ti.App.Properties.getString('user_id'),
+		to_user_id:args.id,
+		content:$.textarea.value
+	}, messageSended);
 	$.textarea.value = '';
 	$.textarea.enabled = false;
-	$.messageSenderArea.animate({top:'-210dp'});
 });
 
 $.prevMsg.on('singletap', function() {
@@ -134,4 +149,10 @@ if (Ti.Platform.osname != 'android') {
 			shadowRadius:3
 		});
 	});
+}
+
+function messageSended() {
+	
+	alert('Mensaje enviado');
+	
 }

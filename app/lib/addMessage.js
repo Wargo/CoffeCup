@@ -1,5 +1,5 @@
 
-module.exports = function(setData) {
+module.exports = function(args, f_confirm) {
 	
 	var client = Ti.Network.createHTTPClient({
 		onload:function() {
@@ -8,7 +8,7 @@ module.exports = function(setData) {
 			var result = JSON.parse(this.responseText);
 			
 			if (result.status = 'ok') {
-				setData(result.data);
+				f_confirm();
 			} else {
 				alert(result.message);
 			}
@@ -19,11 +19,8 @@ module.exports = function(setData) {
 		timeout:15000
 	});
 	
-	client.open('POST', 'http://www.servidordeprueba.net/webs/coffecup_cake/users/json');
+	client.open('POST', 'http://www.servidordeprueba.net/webs/coffecup_cake/messages/add');
 	
-	client.send({
-		w:Ti.Platform.displayCaps.platformWidth,
-		h:Ti.Platform.displayCaps.platformHeight
-	});
+	client.send(args);
 		
 }

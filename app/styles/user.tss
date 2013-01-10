@@ -84,6 +84,6 @@
 	zIndex:50,
 	opacity:0,
 	bottom:'250dp',
-	backgroundColor:'#3057658D',
+	backgroundColor:'#9057658D',
 	separatorColor:'transparent'
 }

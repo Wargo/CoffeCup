@@ -1,4 +1,15 @@
 function Controller() {
+    function setMessages(messagesData) {
+        var messages = [];
+        for (i in messagesData) {
+            var row = Alloy.createController("message", messagesData[i]).getView();
+            messages.push(row);
+        }
+        $.messages.appendRow(messages);
+    }
+    function messageSended() {
+        alert("Mensaje enviado");
+    }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
     var $ = this, exports = {}, __defers = {};
@@ -13,7 +24,7 @@ function Controller() {
         zIndex: 50,
         opacity: 0,
         bottom: "250dp",
-        backgroundColor: "#3057658D",
+        backgroundColor: "#9057658D",
         separatorColor: "transparent",
         id: "messages"
     }), "TableView", $.__views.user);
@@ -278,7 +289,7 @@ function Controller() {
     $.__views.infoHeader.add($.__views.charge);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    var args = arguments[0] || {};
+    var args = arguments[0] || {}, SendMessage = require("addMessage");
     $.loader._loaded = !1;
     $.user.on("open", function() {
         $.loader._loaded == 0 && $.loader.show();
@@ -326,12 +337,8 @@ function Controller() {
         id: 1,
         me: !0,
         message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    } ], messages = [];
-    for (i in messagesData) {
-        var row = Alloy.createController("message", messagesData[i]).getView();
-        messages.push(row);
-    }
-    $.messages.appendRow(messages);
+    } ], GetMessages = require("messages");
+    GetMessages(args.id, setMessages);
     $.user.on("swipe", function(e) {
         e.direction == "right" && $.user.close({
             left: "320dp"
@@ -373,11 +380,16 @@ function Controller() {
         }
     });
     $.send.on("singletap", function() {
-        $.textarea.value = "";
-        $.textarea.enabled = !1;
         $.messageSenderArea.animate({
             top: "-210dp"
         });
+        SendMessage({
+            user_id: Ti.App.Properties.getString("user_id"),
+            to_user_id: args.id,
+            content: $.textarea.value
+        }, messageSended);
+        $.textarea.value = "";
+        $.textarea.enabled = !1;
     });
     $.prevMsg.on("singletap", function() {
         if ($.prevMsg.text == L("close")) {
