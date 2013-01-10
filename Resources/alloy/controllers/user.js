@@ -329,16 +329,24 @@ function Controller() {
     $.scrollview.on("dragend", function(e) {
         if (e.source.contentOffset.y < y) {
             $.scrollview.scrollTo(0, 0);
-            $.messageSenderArea.animate({
+            $.prevMsg.text == L("close") ? $.messageSenderArea.animate({
+                opacity: 1
+            }, function() {
+                $.messages.animate({
+                    opacity: 1
+                });
+            }) : $.messageSenderArea.animate({
                 opacity: 1
             });
-            $.messages.opacity = 1;
         } else {
             $.scrollview.scrollToBottom();
-            $.messageSenderArea.animate({
+            $.messages.animate({
                 opacity: 0
+            }, function() {
+                $.messageSenderArea.animate({
+                    opacity: 0
+                });
             });
-            $.messages.opacity = 0;
         }
     });
     $.messageSenderArea.on("swipe", function(e) {
