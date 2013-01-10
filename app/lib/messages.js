@@ -19,7 +19,7 @@ module.exports = function(user_id, setData) {
 		timeout:15000
 	});
 	
-	client.open('POST', 'http://www.servidordeprueba.net/webs/coffecup_cake/messages/see');
+	client.open('POST', Alloy.CFG.url + '/messages/see');
 	
 	client.send({
 		user_id:Ti.App.Properties.getString('user_id'),

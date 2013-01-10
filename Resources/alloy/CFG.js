@@ -1,3 +1,4 @@
 module.exports = {
-    dependencies: {}
+    dependencies: {},
+    url: "http://www.servidordeprueba.net/webs/coffecup_cake"
 };

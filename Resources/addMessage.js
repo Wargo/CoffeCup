@@ -10,6 +10,6 @@ module.exports = function(args, f_confirm) {
         },
         timeout: 15000
     });
-    client.open("POST", "http://www.servidordeprueba.net/webs/coffecup_cake/messages/add");
+    client.open("POST", Alloy.CFG.url + "/messages/add");
     client.send(args);
 };

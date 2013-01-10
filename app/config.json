@@ -1,5 +1,7 @@
 {
-	"global": {}, 
+	"global": {
+		"url":"http://www.servidordeprueba.net/webs/coffecup_cake"
+	}, 
 	"env:development": {}, 
 	"env:test": {}, 
 	"env:production": {}, 

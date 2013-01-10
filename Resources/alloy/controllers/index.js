@@ -20,9 +20,27 @@ function Controller() {
                 e.source.opacity = 1;
             });
             user.addEventListener("singletap", function(e) {
-                Alloy.createController("user", e.source._data).getView().open({
+                if (Ti.App.Properties.getString("user_id", null)) Alloy.createController("user", e.source._data).getView().open({
                     left: 0
-                });
+                }); else {
+                    var confirm = Ti.UI.createAlertDialog({
+                        title: L("confirm"),
+                        message: String.format(L("confirm_msg"), e.source._data.name),
+                        cancel: 1,
+                        buttonNames: [ L("yes"), L("no") ]
+                    });
+                    confirm.show();
+                    confirm.addEventListener("click", function(e2) {
+                        if (e2.index === 0) {
+                            Ti.UI.createAlertDialog({
+                                title: L("done"),
+                                message: String.format(L("hello"), e.source._data.name),
+                                ok: L("ok")
+                            }).show();
+                            Ti.App.Properties.setString("user_id", e.source._data.id);
+                        }
+                    });
+                }
             });
             if (i % 3 == 0) {
                 var row = Ti.UI.createTableViewRow({
@@ -76,8 +94,12 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.Platform.osname != "android" && require("ti.viewshadow");
-    Ti.App.Properties.setString("user_id", "50eda1ed-c248-4d14-affb-3415b4188753");
-    $.headerTitle.text = L("¿Quién es quién?");
+    Ti.App.Properties.getString("user_id", null) == null && Ti.UI.createAlertDialog({
+        title: L("welcome"),
+        message: L("welcome_message"),
+        ok: L("ok")
+    }).show();
+    $.headerTitle.text = L("main_title");
     var getData = require("users");
     getData(setData);
     $.index.open();

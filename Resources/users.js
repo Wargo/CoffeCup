@@ -10,7 +10,7 @@ module.exports = function(setData) {
         },
         timeout: 15000
     });
-    client.open("POST", "http://www.servidordeprueba.net/webs/coffecup_cake/users/json");
+    client.open("POST", Alloy.CFG.url + "/users/json");
     client.send({
         w: Ti.Platform.displayCaps.platformWidth,
         h: Ti.Platform.displayCaps.platformHeight

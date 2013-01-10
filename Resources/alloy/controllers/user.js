@@ -1,15 +1,15 @@
 function Controller() {
     function setMessages(messagesData) {
+        $.messages.data = [];
         var messages = [];
         for (i in messagesData) {
             var row = Alloy.createController("message", messagesData[i]).getView();
             messages.push(row);
         }
         $.messages.appendRow(messages);
+        $.messages.scrollToIndex($.messages.data[0].rows.length - 1);
     }
-    function messageSended() {
-        alert("Mensaje enviado");
-    }
+    function messageSended() {}
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
     var $ = this, exports = {}, __defers = {};
@@ -23,7 +23,7 @@ function Controller() {
     $.__views.messages = A$(Ti.UI.createTableView({
         zIndex: 50,
         opacity: 0,
-        bottom: "250dp",
+        bottom: "330dp",
         backgroundColor: "#9057658D",
         separatorColor: "transparent",
         id: "messages"
@@ -289,7 +289,9 @@ function Controller() {
     $.__views.infoHeader.add($.__views.charge);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    var args = arguments[0] || {}, SendMessage = require("addMessage");
+    var args = arguments[0] || {};
+    args.id == Ti.App.Properties.getString("user_id") && $.messageSenderArea.parent.remove($.messageSenderArea);
+    var SendMessage = require("addMessage");
     $.loader._loaded = !1;
     $.user.on("open", function() {
         $.loader._loaded == 0 && $.loader.show();
@@ -313,31 +315,7 @@ function Controller() {
     $.l_talkmeabout.text = L("talkmeabout");
     $.l_icomefrom.text = L("icomefrom");
     $.prevMsg.text = L("prev_msg");
-    var messagesData = [ {
-        id: 1,
-        me: !0,
-        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    }, {
-        id: 1,
-        me: !1,
-        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    }, {
-        id: 1,
-        me: !1,
-        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    }, {
-        id: 1,
-        me: !0,
-        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    }, {
-        id: 1,
-        me: !1,
-        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    }, {
-        id: 1,
-        me: !0,
-        message: "Lorem ipsum dolor sit amet, and the playcor weiser, hander."
-    } ], GetMessages = require("messages");
+    var GetMessages = require("messages");
     GetMessages(args.id, setMessages);
     $.user.on("swipe", function(e) {
         e.direction == "right" && $.user.close({
@@ -354,11 +332,13 @@ function Controller() {
             $.messageSenderArea.animate({
                 opacity: 1
             });
+            $.messages.opacity = 1;
         } else {
             $.scrollview.scrollToBottom();
             $.messageSenderArea.animate({
                 opacity: 0
             });
+            $.messages.opacity = 0;
         }
     });
     $.messageSenderArea.on("swipe", function(e) {
@@ -376,23 +356,37 @@ function Controller() {
                 });
                 $.prevMsg.text = L("prev_msg");
             });
+            $.messageSenderArea.height = "250dp";
             $.textarea.enabled = !1;
         }
     });
+    $.textarea.on("blur", function() {
+        $.messageSenderArea.height = "250dp";
+    });
+    $.textarea.on("focus", function() {
+        $.prevMsg.text == L("close") && ($.messageSenderArea.height = "130dp");
+    });
     $.send.on("singletap", function() {
-        $.messageSenderArea.animate({
-            top: "-210dp"
-        });
-        SendMessage({
-            user_id: Ti.App.Properties.getString("user_id"),
-            to_user_id: args.id,
-            content: $.textarea.value
-        }, messageSended);
-        $.textarea.value = "";
-        $.textarea.enabled = !1;
+        if ($.textarea.value) {
+            SendMessage({
+                user_id: Ti.App.Properties.getString("user_id"),
+                to_user_id: args.id,
+                content: $.textarea.value
+            }, messageSended);
+            var new_row = Alloy.createController("message", {
+                content: $.textarea.value,
+                me: !0,
+                date: new Date
+            }).getView();
+            $.messages.appendRow(new_row);
+            $.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+            $.textarea.value = "";
+            $.textarea.enabled = !1;
+        }
     });
     $.prevMsg.on("singletap", function() {
         if ($.prevMsg.text == L("close")) {
+            $.messageSenderArea.height = "250dp";
             $.messages.animate({
                 opacity: 0
             }, function() {
@@ -405,8 +399,9 @@ function Controller() {
             $.textarea.value = "";
             $.textarea.enabled = !1;
         } else {
+            $.textarea.blur();
             $.messageSenderArea.animate({
-                top: Ti.Platform.displayCaps.platformHeight - 250 + "dp"
+                top: Ti.Platform.displayCaps.platformHeight - 330 + "dp"
             }, function() {
                 $.messages.animate({
                     opacity: 1

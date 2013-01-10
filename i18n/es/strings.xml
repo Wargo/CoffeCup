@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="confirm_msg">¿Estás seguro de que eres %s?</string>
+	<string name="hello">¡Hola %s!</string>
+	<string name="welcome">Bienvenido/a</string>
+	<string name="welcome_message">Hola! Necesito saber quién eres, así que selecciónate, por favor :)</string>
+	<string name="main_title">¿Quién es quién?</string>
+	<string name="confirm">Confirmación</string>
+	<string name="yes">Sí</string>
+	<string name="no">No</string>
+	<string name="done">¡Ya está!</string>
+	<string name="ok">Ok</string>
+	<string name="email">Email</string>
+	<string name="mobile">Móvil</string>
+	<string name="birthday">Cumpleaños</string>
+	<string name="talkmeabout">Háblame de</string>
+	<string name="icomefrom">Vengo de</string>
+	<string name="prev_msg">Mensajes anteriores</string>
+	<string name="sended">Mensaje enviado correctamente</string>
+	<string name="close">Cerrar</string>
+</resources>

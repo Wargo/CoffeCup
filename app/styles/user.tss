@@ -83,7 +83,7 @@
 '#messages': {
 	zIndex:50,
 	opacity:0,
-	bottom:'250dp',
+	bottom:'330dp',
 	backgroundColor:'#9057658D',
 	separatorColor:'transparent'
 }

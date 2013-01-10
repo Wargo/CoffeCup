@@ -20,8 +20,8 @@ function Controller() {
     }), "View", $.__views.row);
     $.__views.row.add($.__views.view);
     $.__views.text = A$(Ti.UI.createLabel({
-        left: "5dp",
-        right: "5dp",
+        left: "10dp",
+        right: "10dp",
         top: "20dp",
         bottom: "5dp",
         height: "auto",

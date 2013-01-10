@@ -1,5 +1,9 @@
 var args = arguments[0] || {};
 
+if (args.id == Ti.App.Properties.getString('user_id')) {
+	$.messageSenderArea.parent.remove($.messageSenderArea);
+}
+
 var SendMessage = require('addMessage');
 
 $.loader._loaded = false;
@@ -33,20 +37,13 @@ $.l_icomefrom.text = L('icomefrom');
 
 $.prevMsg.text = L('prev_msg');
 
-var messagesData = [
-	{id:1, me:true, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'},
-	{id:1, me:false, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'},
-	{id:1, me:false, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'},
-	{id:1, me:true, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'},
-	{id:1, me:false, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'},
-	{id:1, me:true, message:'Lorem ipsum dolor sit amet, and the playcor weiser, hander.'}
-];
-
 var GetMessages = require('messages');
 
 GetMessages(args.id, setMessages);
 
 function setMessages(messagesData) {
+	
+	$.messages.data = [];
 	
 	var messages = [];
 	
@@ -59,6 +56,8 @@ function setMessages(messagesData) {
 	}
 	
 	$.messages.appendRow(messages);
+	
+	$.messages.scrollToIndex($.messages.data[0].rows.length - 1);
 	
 }
 
@@ -78,9 +77,11 @@ $.scrollview.on('dragend', function(e) {
 	if (e.source.contentOffset.y < y) {
 		$.scrollview.scrollTo(0,0);
 		$.messageSenderArea.animate({opacity:1});
+		$.messages.opacity = 1;
 	} else {
 		$.scrollview.scrollToBottom();
 		$.messageSenderArea.animate({opacity:0});
+		$.messages.opacity = 0;
 	}
 });
 
@@ -93,23 +94,41 @@ $.messageSenderArea.on('swipe', function(e) {
 			$.messages.animate({opacity:0});
 			$.prevMsg.text = L('prev_msg');
 		});
+		$.messageSenderArea.height = '250dp';
 		$.textarea.enabled = false;
 	}
 });
 
+$.textarea.on('blur', function() {
+	$.messageSenderArea.height = '250dp';
+});
+$.textarea.on('focus', function() {
+	if ($.prevMsg.text == L('close')) {
+		$.messageSenderArea.height = '130dp';
+	}
+});
+
 $.send.on('singletap', function() {
-	$.messageSenderArea.animate({top:'-210dp'});
-	SendMessage({
-		user_id:Ti.App.Properties.getString('user_id'),
-		to_user_id:args.id,
-		content:$.textarea.value
-	}, messageSended);
-	$.textarea.value = '';
-	$.textarea.enabled = false;
+	if ($.textarea.value) {
+		//$.messageSenderArea.animate({top:'-210dp'});
+		SendMessage({
+			user_id:Ti.App.Properties.getString('user_id'),
+			to_user_id:args.id,
+			content:$.textarea.value
+		}, messageSended);
+		
+		var new_row = Alloy.createController('message', {content:$.textarea.value, me:true, date:new Date()}).getView();
+		$.messages.appendRow(new_row);
+		$.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+		
+		$.textarea.value = '';
+		$.textarea.enabled = false;
+	}
 });
 
 $.prevMsg.on('singletap', function() {
 	if ($.prevMsg.text == L('close')) {
+		$.messageSenderArea.height = '250dp';
 		$.messages.animate({opacity:0}, function() {
 			$.messageSenderArea.animate({top:'-210dp'}, function() {
 				$.prevMsg.text = L('prev_msg');
@@ -118,7 +137,9 @@ $.prevMsg.on('singletap', function() {
 		$.textarea.value = '';
 		$.textarea.enabled = false;
 	} else {
-		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 250) + 'dp'}, function() {
+		//$.messageSenderArea.height = '130dp';
+		$.textarea.blur();
+		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 330) + 'dp'}, function() {
 			$.messages.animate({opacity:1});
 		});
 		$.prevMsg.text = L('close');
@@ -152,7 +173,11 @@ if (Ti.Platform.osname != 'android') {
 }
 
 function messageSended() {
-	
-	alert('Mensaje enviado');
-	
+	/*
+	Ti.UI.createAlertDialog({
+		title:L('sended'),
+		ok:L('ok')
+	}).show();
+	*/
+	//GetMessages(args.id, setMessages);
 }
