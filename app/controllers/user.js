@@ -1,6 +1,20 @@
 var args = arguments[0] || {};
 
-$.avatar.image = args.img_p;
+$.loader._loaded = false;
+
+$.user.on('open', function() {
+	if ($.loader._loaded == false) {
+		$.loader.show();
+	}
+});
+
+$.avatar.on('load', function() {
+	$.loader.hide();
+	$.loader._loaded = true;
+	$.avatar.add($.infoHeader)
+});
+
+$.avatar.image = args.img_b;
 $.name.text = args.name;
 $.charge.text = args.charge;
 $.email.text = args.email;

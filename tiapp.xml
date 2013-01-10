@@ -46,7 +46,7 @@
     <modules>
         <module platform="commonjs">ti.cloud</module>
         <module platform="android" version="1.0">ti.physicalSizeCategory</module>
-        <module platform="iphone" version="0.3">ti.viewshadow</module>
+        <module platform="iphone" version="0.4">ti.viewshadow</module>
     </modules>
     <deployment-targets>
         <target device="blackberry">false</target>

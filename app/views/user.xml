@@ -12,10 +12,7 @@
 		</View>
 		<ScrollView id="scrollview">
 			<ImageView id="avatar">
-				<View class="infoHeader">
-					<Label id="name" />
-					<Label id="charge" />
-				</View>
+				<ActivityIndicator id="loader" />
 			</ImageView>
 			<View class="infoSteps">
 				<View class="step">
@@ -41,4 +38,8 @@
 			</View>
 		</ScrollView>
 	</Window>
+	<View class="infoHeader" id="infoHeader">
+		<Label id="name" />
+		<Label id="charge" />
+	</View>
 </Alloy>

@@ -4,6 +4,8 @@ function Controller() {
     var $ = this, exports = {}, __defers = {};
     $.__views.user = A$(Ti.UI.createWindow({
         backgroundColor: "black",
+        left: "320dp",
+        width: "320dp",
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
@@ -11,7 +13,7 @@ function Controller() {
         zIndex: 50,
         opacity: 0,
         bottom: "250dp",
-        backgroundColor: "#9057658D",
+        backgroundColor: "#3057658D",
         separatorColor: "transparent",
         id: "messages"
     }), "TableView", $.__views.user);
@@ -73,56 +75,31 @@ function Controller() {
     }), "ScrollView", $.__views.user);
     $.__views.user.add($.__views.scrollview);
     $.__views.avatar = A$(Ti.UI.createImageView({
+        defaultImage: "none",
         top: 0,
         height: Ti.Platform.displayCaps.platformHeight,
-        width: "320dp",
+        width: Ti.Platform.displayCaps.platformWidth,
         id: "avatar"
     }), "ImageView", $.__views.scrollview);
     $.__views.scrollview.add($.__views.avatar);
+    $.__views.loader = A$(Ti.UI.createActivityIndicator({
+        id: "loader"
+    }), "ActivityIndicator", $.__views.avatar);
+    $.__views.avatar.add($.__views.loader);
     $.__views.__alloyId2 = A$(Ti.UI.createView({
-        backgroundColor: "#8557658D",
-        height: "50dp",
-        bottom: 0,
-        layout: "vertical",
-        id: "__alloyId2"
-    }), "View", $.__views.avatar);
-    $.__views.avatar.add($.__views.__alloyId2);
-    $.__views.name = A$(Ti.UI.createLabel({
-        color: "white",
-        font: {
-            fontFamily: "Helvetica Neue",
-            fontSize: "16dp"
-        },
-        left: "10dp",
-        right: "10dp",
-        id: "name"
-    }), "Label", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.name);
-    $.__views.charge = A$(Ti.UI.createLabel({
-        color: "white",
-        font: {
-            fontFamily: "Helvetica Neue",
-            fontSize: "16dp"
-        },
-        left: "10dp",
-        right: "10dp",
-        id: "charge"
-    }), "Label", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.charge);
-    $.__views.__alloyId3 = A$(Ti.UI.createView({
         backgroundColor: "#57658D",
         top: Ti.Platform.displayCaps.platformHeight,
         layout: "vertical",
-        id: "__alloyId3"
+        id: "__alloyId2"
     }), "View", $.__views.scrollview);
-    $.__views.scrollview.add($.__views.__alloyId3);
-    $.__views.__alloyId4 = A$(Ti.UI.createView({
+    $.__views.scrollview.add($.__views.__alloyId2);
+    $.__views.__alloyId3 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId4"
-    }), "View", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.__alloyId4);
+        id: "__alloyId3"
+    }), "View", $.__views.__alloyId2);
+    $.__views.__alloyId2.add($.__views.__alloyId3);
     $.__views.l_birthday = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -132,8 +109,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_birthday"
-    }), "Label", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.l_birthday);
+    }), "Label", $.__views.__alloyId3);
+    $.__views.__alloyId3.add($.__views.l_birthday);
     $.__views.birthday = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -144,15 +121,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "birthday"
-    }), "Label", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.birthday);
-    $.__views.__alloyId5 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId3);
+    $.__views.__alloyId3.add($.__views.birthday);
+    $.__views.__alloyId4 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId5"
-    }), "View", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.__alloyId5);
+        id: "__alloyId4"
+    }), "View", $.__views.__alloyId2);
+    $.__views.__alloyId2.add($.__views.__alloyId4);
     $.__views.l_email = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -162,8 +139,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_email"
-    }), "Label", $.__views.__alloyId5);
-    $.__views.__alloyId5.add($.__views.l_email);
+    }), "Label", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.l_email);
     $.__views.email = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -174,15 +151,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "email"
-    }), "Label", $.__views.__alloyId5);
-    $.__views.__alloyId5.add($.__views.email);
-    $.__views.__alloyId6 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.email);
+    $.__views.__alloyId5 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId6"
-    }), "View", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.__alloyId6);
+        id: "__alloyId5"
+    }), "View", $.__views.__alloyId2);
+    $.__views.__alloyId2.add($.__views.__alloyId5);
     $.__views.l_mobile = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -192,8 +169,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_mobile"
-    }), "Label", $.__views.__alloyId6);
-    $.__views.__alloyId6.add($.__views.l_mobile);
+    }), "Label", $.__views.__alloyId5);
+    $.__views.__alloyId5.add($.__views.l_mobile);
     $.__views.mobile = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -204,15 +181,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "mobile"
-    }), "Label", $.__views.__alloyId6);
-    $.__views.__alloyId6.add($.__views.mobile);
-    $.__views.__alloyId7 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId5);
+    $.__views.__alloyId5.add($.__views.mobile);
+    $.__views.__alloyId6 = A$(Ti.UI.createView({
         height: "140dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId7"
-    }), "View", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.__alloyId7);
+        id: "__alloyId6"
+    }), "View", $.__views.__alloyId2);
+    $.__views.__alloyId2.add($.__views.__alloyId6);
     $.__views.l_talkmeabout = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -223,8 +200,8 @@ function Controller() {
         right: "10dp",
         top: "10dp",
         id: "l_talkmeabout"
-    }), "Label", $.__views.__alloyId7);
-    $.__views.__alloyId7.add($.__views.l_talkmeabout);
+    }), "Label", $.__views.__alloyId6);
+    $.__views.__alloyId6.add($.__views.l_talkmeabout);
     $.__views.talkmeabout = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -236,15 +213,15 @@ function Controller() {
         textAlign: "right",
         top: "40dp",
         id: "talkmeabout"
-    }), "Label", $.__views.__alloyId7);
-    $.__views.__alloyId7.add($.__views.talkmeabout);
-    $.__views.__alloyId8 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId6);
+    $.__views.__alloyId6.add($.__views.talkmeabout);
+    $.__views.__alloyId7 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId8"
-    }), "View", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.__alloyId8);
+        id: "__alloyId7"
+    }), "View", $.__views.__alloyId2);
+    $.__views.__alloyId2.add($.__views.__alloyId7);
     $.__views.l_icomefrom = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -254,8 +231,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_icomefrom"
-    }), "Label", $.__views.__alloyId8);
-    $.__views.__alloyId8.add($.__views.l_icomefrom);
+    }), "Label", $.__views.__alloyId7);
+    $.__views.__alloyId7.add($.__views.l_icomefrom);
     $.__views.icomefrom = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -266,12 +243,52 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "icomefrom"
-    }), "Label", $.__views.__alloyId8);
-    $.__views.__alloyId8.add($.__views.icomefrom);
+    }), "Label", $.__views.__alloyId7);
+    $.__views.__alloyId7.add($.__views.icomefrom);
+    $.__views.infoHeader = A$(Ti.UI.createView({
+        backgroundColor: "#8557658D",
+        height: "50dp",
+        bottom: 0,
+        layout: "vertical",
+        zIndex: 100,
+        id: "infoHeader"
+    }), "View", null);
+    $.addTopLevelView($.__views.infoHeader);
+    $.__views.name = A$(Ti.UI.createLabel({
+        color: "white",
+        font: {
+            fontFamily: "Helvetica Neue",
+            fontSize: "16dp"
+        },
+        left: "10dp",
+        right: "10dp",
+        id: "name"
+    }), "Label", $.__views.infoHeader);
+    $.__views.infoHeader.add($.__views.name);
+    $.__views.charge = A$(Ti.UI.createLabel({
+        color: "white",
+        font: {
+            fontFamily: "Helvetica Neue",
+            fontSize: "16dp"
+        },
+        left: "10dp",
+        right: "10dp",
+        id: "charge"
+    }), "Label", $.__views.infoHeader);
+    $.__views.infoHeader.add($.__views.charge);
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};
-    $.avatar.image = args.img_p;
+    $.loader._loaded = !1;
+    $.user.on("open", function() {
+        $.loader._loaded == 0 && $.loader.show();
+    });
+    $.avatar.on("load", function() {
+        $.loader.hide();
+        $.loader._loaded = !0;
+        $.avatar.add($.infoHeader);
+    });
+    $.avatar.image = args.img_b;
     $.name.text = args.name;
     $.charge.text = args.charge;
     $.email.text = args.email;
@@ -386,6 +403,38 @@ function Controller() {
             $.prevMsg.text = L("close");
         }
     });
+    if (Ti.Platform.osname != "android") {
+        $.textarea.on("postlayout", function() {
+            $.textarea.setShadow({
+                shadowOffset: {
+                    x: 0,
+                    y: 2
+                },
+                shadowOpacity: 0.2,
+                shadowRadius: 2
+            });
+        });
+        $.send.on("postlayout", function() {
+            $.send.setShadow({
+                shadowOffset: {
+                    x: 3,
+                    y: 3
+                },
+                shadowOpacity: 0.3,
+                shadowRadius: 3
+            });
+        });
+        $.messageSender.on("postlayout", function() {
+            $.messageSender.setShadow({
+                shadowOffset: {
+                    x: 0,
+                    y: 3
+                },
+                shadowOpacity: 0.3,
+                shadowRadius: 3
+            });
+        });
+    }
     _.extend($, exports);
 }
 

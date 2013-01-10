@@ -6,7 +6,8 @@
 	backgroundColor:'#8557658D',
 	height:'50dp',
 	bottom:0,
-	layout:'vertical'
+	layout:'vertical',
+	zIndex:100
 },
 '.infoSteps': {
 	backgroundColor:'#57658D',
@@ -28,9 +29,10 @@
 	contentHeight:'auto'
 },
 '#avatar': {
+	defaultImage:'none',
 	top:0,
 	height:Ti.Platform.displayCaps.platformHeight,
-	width:'320dp'
+	width:Ti.Platform.displayCaps.platformWidth
 },
 '.right': {
 	textAlign:'right'
@@ -82,6 +84,6 @@
 	zIndex:50,
 	opacity:0,
 	bottom:'250dp',
-	backgroundColor:'#9057658D',
+	backgroundColor:'#3057658D',
 	separatorColor:'transparent'
 }

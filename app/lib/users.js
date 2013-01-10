@@ -1,6 +1,32 @@
 
 module.exports = function(setData) {
 	
+	var client = Ti.Network.createHTTPClient({
+		onload:function() {
+			Ti.API.error(this.responseText);
+			
+			var result = JSON.parse(this.responseText);
+			
+			if (result.status = 'ok') {
+				setData(result.data);
+			} else {
+				alert(result.message);
+			}
+		},
+		onerror:function(e) {
+			alert(e);
+		},
+		timeout:15000
+	});
+	
+	client.open('POST', 'http://www.servidordeprueba.net/webs/coffecup_cake/users/json');
+	
+	client.send({
+		w:Ti.Platform.displayCaps.platformWidth,
+		h:Ti.Platform.displayCaps.platformHeight
+	});
+	
+	/*
 	setData([
 		{
 			id:1, img_p:'http://www.servidordeprueba.net/webs/coffecup/imgp/1.jpg',
@@ -41,7 +67,7 @@ module.exports = function(setData) {
 			birthday:'10-09-1980',
 			talkmeabout:'Tecnología, publicidad, negocios, porno, deporte, videojuegos, internet...',
 			icomefrom:'Valencia (España)'
-		},/*
+		},
 		{
 			id:1, img_p:'http://www.servidordeprueba.net/webs/coffecup/imgp/5.jpg',
 			name:'Albert Soriano',
@@ -161,7 +187,8 @@ module.exports = function(setData) {
 			birthday:'10-09-1980',
 			talkmeabout:'Tecnología, publicidad, negocios, porno, deporte, videojuegos, internet...',
 			icomefrom:'Valencia (España)'
-		},*/
+		},
 	]);
+	*/
 	
 }
