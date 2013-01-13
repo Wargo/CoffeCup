@@ -8,6 +8,9 @@ if (Ti.App.Properties.getString('user_id', null) == null) {
 		message:L('welcome_message'),
 		ok:L('ok')
 	}).show();
+} else {
+	var Cloud = require('cloud');
+	Cloud();
 }
 
 $.headerTitle.text = L('main_title');

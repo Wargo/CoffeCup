@@ -195,7 +195,7 @@ function Controller() {
     }), "Label", $.__views.__alloyId5);
     $.__views.__alloyId5.add($.__views.mobile);
     $.__views.__alloyId6 = A$(Ti.UI.createView({
-        height: "140dp",
+        height: Ti.UI.SIZE,
         borderColor: "#CCC",
         borderWidth: 1,
         id: "__alloyId6"
@@ -258,7 +258,7 @@ function Controller() {
     $.__views.__alloyId7.add($.__views.icomefrom);
     $.__views.infoHeader = A$(Ti.UI.createView({
         backgroundColor: "#8557658D",
-        height: "50dp",
+        height: Ti.UI.SIZE,
         bottom: 0,
         layout: "vertical",
         zIndex: 100,
@@ -329,10 +329,10 @@ function Controller() {
     $.scrollview.on("dragend", function(e) {
         if (e.source.contentOffset.y < y) {
             $.scrollview.scrollTo(0, 0);
-            $.prevMsg.text == L("close") ? $.messageSenderArea.animate({
+            $.prevMsg.text == L("close") ? $.messages.animate({
                 opacity: 1
             }, function() {
-                $.messages.animate({
+                $.messageSenderArea.animate({
                     opacity: 1
                 });
             }) : $.messageSenderArea.animate({
@@ -340,10 +340,10 @@ function Controller() {
             });
         } else {
             $.scrollview.scrollToBottom();
-            $.messages.animate({
+            $.messageSenderArea.animate({
                 opacity: 0
             }, function() {
-                $.messageSenderArea.animate({
+                $.messages.animate({
                     opacity: 0
                 });
             });

@@ -3,7 +3,7 @@ module.exports = function(setData) {
 	
 	var client = Ti.Network.createHTTPClient({
 		onload:function() {
-			Ti.API.error(this.responseText);
+			//Ti.API.error(this.responseText);
 			
 			var result = JSON.parse(this.responseText);
 			

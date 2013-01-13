@@ -94,11 +94,14 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.Platform.osname != "android" && require("ti.viewshadow");
-    Ti.App.Properties.getString("user_id", null) == null && Ti.UI.createAlertDialog({
+    if (Ti.App.Properties.getString("user_id", null) == null) Ti.UI.createAlertDialog({
         title: L("welcome"),
         message: L("welcome_message"),
         ok: L("ok")
-    }).show();
+    }).show(); else {
+        var Cloud = require("cloud");
+        Cloud();
+    }
     $.headerTitle.text = L("main_title");
     var getData = require("users");
     getData(setData);
