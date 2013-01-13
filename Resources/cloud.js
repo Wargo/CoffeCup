@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = function(f_callback) {
     function registerUser() {
         Cloud.Users.create({
             username: username,
@@ -7,7 +7,6 @@ module.exports = function() {
             first_name: "Firstname",
             last_name: "Lastname"
         }, function(e) {
-            alert("registerUser");
             e.success ? Ti.API.info("registerUser OK") : Ti.API.info("error registering user");
             login();
         });
@@ -18,7 +17,6 @@ module.exports = function() {
             password: password
         }, function(e) {
             if (e.success) {
-                alert("login");
                 var user = e.users[0].id;
                 Ti.App.Properties.setString("cloud_user_id", user);
                 Ti.API.info("Login OK");
@@ -30,7 +28,6 @@ module.exports = function() {
         Ti.Network.registerForPushNotifications({
             types: [ Titanium.Network.NOTIFICATION_TYPE_BADGE, Titanium.Network.NOTIFICATION_TYPE_ALERT, Titanium.Network.NOTIFICATION_TYPE_SOUND ],
             success: function(e) {
-                alert("getDeviceToken");
                 user_device_token = e.deviceToken;
                 Ti.App.Properties.setString("device_token", user_device_token);
                 Ti.API.info("Device token: " + user_device_token);
@@ -40,7 +37,10 @@ module.exports = function() {
                 Ti.API.info("Error during registration: " + e.error);
             },
             callback: function(e) {
-                alert(e);
+                var badge = e.data.badge;
+                Ti.UI.iPhone.appBadge = badge;
+                Ti.Media.vibrate();
+                f_callback(e.data);
             }
         });
     }
@@ -51,23 +51,17 @@ module.exports = function() {
             device_token: user_device_token
         }, function(e) {
             if (e.success) {
-                alert("subscribeToServerPush");
                 Ti.API.info("Success" + (e.error && e.message || JSON.stringify(e)));
                 var path = Alloy.CFG.url + "/users/suscribe", client = Ti.Network.createHTTPClient({
                     onload: function(e) {
                         Ti.API.info("ok");
                         var result = JSON.parse(this.responseText);
-                        alert(result);
                     },
                     onerror: function(e) {
                         Ti.API.info("error");
-                        alert("error");
                     },
                     timeout: 15000
                 });
-                alert(path);
-                alert(Ti.App.Properties.getString("user_id", null));
-                alert(Ti.App.Properties.getString("cloud_user_id", null));
                 client.open("POST", path);
                 client.send({
                     user_id: Ti.App.Properties.getString("user_id", null),

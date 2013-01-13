@@ -46,9 +46,9 @@ function Controller() {
     $.__views.view.add($.__views.date);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    var args = arguments[0] || {};
+    var args = arguments[0] || {}, date = new Date, month = parseInt(date.getMonth()) + 1 <= 9 ? "0" + parseInt(parseInt(date.getMonth()) + 1) : parseInt(date.getMonth()) + 1, mins = date.getMinutes() <= 9 ? "0" + date.getMinutes() : date.getMinutes(), seconds = date.getSeconds() <= 9 ? "0" + date.getSeconds() : date.getSeconds(), hours = date.getHours() <= 9 ? "0" + date.getHours() : date.getHours(), today = date.getDate() + "-" + month + "-" + date.getFullYear() + " " + hours + ":" + mins + ":" + seconds;
     $.text.text = args.content;
-    $.date.text = args.date;
+    $.date.text = args.date || today;
     if (args.me) {
         $.view.backgroundColor = "#50BFFFEF";
         $.view.right = "10dp";

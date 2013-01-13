@@ -1,6 +1,59 @@
 if (Ti.Platform.osname != 'android') {
 	require('ti.viewshadow');
 }
+/*
+setTimeout(function() {
+f_callback({
+	from_id:'50eda1ed-c248-4d14-affb-3415b4188753',
+	alert:'mensaje de texto'
+});
+}, 10000);
+*/
+function f_callback(data) {
+	if (data.from_id == Ti.App.Properties.getString('current_user_id', null)) {
+		var new_row = Alloy.createController('message', {content:data.alert}).getView();
+		var messages = Alloy.CFG.messages;
+		messages.appendRow(new_row);
+		messages.scrollToIndex(messages.data[0].rows.length - 1);
+	} else {
+		var bbdd = Ti.App.Properties.getList('data');
+		for (i in bbdd) {
+			if (bbdd[i].id == data.from_id) {
+				var current_user = bbdd[i];
+			}
+		}
+		
+		var notify = Ti.UI.createView({
+			zIndex:150,
+			bottom:'-50dp',
+			height:'50dp',
+			backgroundColor:'#9557658D',
+			borderWidth:1,
+			borderColor:'#CCC',
+			borderRadius:5
+		});
+		notify.add(Ti.UI.createLabel({
+			text:current_user.name + ': ' + data.alert,
+			top:'5dp',
+			right:'5dp',
+			left:'5dp',
+			bottom:'5dp',
+			color:'#FFF',
+			textAlign:'center'
+		}));
+		$.index.add(notify);
+		notify.animate({bottom:'-5'}, function() {
+			setTimeout(function() {
+				notify.animate({opacity:0});
+			}, 5000);
+		});
+		notify.addEventListener('singletap', function() {
+			Alloy.createController('user', current_user).getView().open({left:0});
+		});
+	}
+}
+
+Ti.App.Properties.setString('current_user_id', null)
 
 if (Ti.App.Properties.getString('user_id', null) == null) {
 	Ti.UI.createAlertDialog({
@@ -10,7 +63,7 @@ if (Ti.App.Properties.getString('user_id', null) == null) {
 	}).show();
 } else {
 	var Cloud = require('cloud');
-	Cloud();
+	Cloud(f_callback);
 }
 
 $.headerTitle.text = L('main_title');
@@ -18,6 +71,8 @@ $.headerTitle.text = L('main_title');
 var getData = require('users');
 
 function setData(data) {
+	
+	Ti.App.Properties.setList('data', data);
 	
 	var rows = [];
 	

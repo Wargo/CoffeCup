@@ -1,5 +1,5 @@
 
-module.exports = function() {
+module.exports = function(f_callback) {
 	
 	var Cloud = require('ti.cloud');
 	var user_device_token 	= Ti.App.Properties.getString("device_token", null);
@@ -60,9 +60,12 @@ module.exports = function() {
 		        Ti.API.info("Error during registration: " + e.error);
 		    },
 		    callback:function(e) {
-	      		//var badge = e.data.badge;
-				//Ti.UI.iPhone.appBadge = badge;
-				alert(e);
+	      		var badge = e.data.badge;
+				Ti.UI.iPhone.appBadge = badge;
+				
+				Ti.Media.vibrate();
+				
+				f_callback(e.data);
 		    }
 		});
 	}

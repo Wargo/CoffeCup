@@ -1,5 +1,51 @@
 function Controller() {
+    function f_callback(data) {
+        if (data.from_id == Ti.App.Properties.getString("current_user_id", null)) {
+            var new_row = Alloy.createController("message", {
+                content: data.alert
+            }).getView(), messages = Alloy.CFG.messages;
+            messages.appendRow(new_row);
+            messages.scrollToIndex(messages.data[0].rows.length - 1);
+        } else {
+            var bbdd = Ti.App.Properties.getList("data");
+            for (i in bbdd) if (bbdd[i].id == data.from_id) var current_user = bbdd[i];
+            var notify = Ti.UI.createView({
+                zIndex: 150,
+                bottom: "-50dp",
+                height: "50dp",
+                backgroundColor: "#9557658D",
+                borderWidth: 1,
+                borderColor: "#CCC",
+                borderRadius: 5
+            });
+            notify.add(Ti.UI.createLabel({
+                text: current_user.name + ": " + data.alert,
+                top: "5dp",
+                right: "5dp",
+                left: "5dp",
+                bottom: "5dp",
+                color: "#FFF",
+                textAlign: "center"
+            }));
+            $.index.add(notify);
+            notify.animate({
+                bottom: "-5"
+            }, function() {
+                setTimeout(function() {
+                    notify.animate({
+                        opacity: 0
+                    });
+                }, 5000);
+            });
+            notify.addEventListener("singletap", function() {
+                Alloy.createController("user", current_user).getView().open({
+                    left: 0
+                });
+            });
+        }
+    }
     function setData(data) {
+        Ti.App.Properties.setList("data", data);
         var rows = [];
         for (i in data) {
             var user = Ti.UI.createImageView({
@@ -94,13 +140,14 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.Platform.osname != "android" && require("ti.viewshadow");
+    Ti.App.Properties.setString("current_user_id", null);
     if (Ti.App.Properties.getString("user_id", null) == null) Ti.UI.createAlertDialog({
         title: L("welcome"),
         message: L("welcome_message"),
         ok: L("ok")
     }).show(); else {
         var Cloud = require("cloud");
-        Cloud();
+        Cloud(f_callback);
     }
     $.headerTitle.text = L("main_title");
     var getData = require("users");

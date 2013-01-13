@@ -9,10 +9,15 @@ var SendMessage = require('addMessage');
 $.loader._loaded = false;
 
 $.user.on('open', function() {
+	Ti.App.Properties.setString('current_user_id', args.id);
 	if ($.loader._loaded == false) {
 		$.loader.show();
 	}
 });
+
+$.user.on('close', function() {
+	Ti.App.Properties.setString('current_user_id', null);
+})
 
 $.avatar.on('load', function() {
 	$.loader.hide();
@@ -36,6 +41,10 @@ $.l_talkmeabout.text = L('talkmeabout');
 $.l_icomefrom.text = L('icomefrom');
 
 $.prevMsg.text = L('prev_msg');
+
+Ti.UI.iPhone.appBadge = 0;
+
+Alloy.CFG.messages =  $.messages;
 
 var GetMessages = require('messages');
 
@@ -123,12 +132,12 @@ $.send.on('singletap', function() {
 			content:$.textarea.value
 		}, messageSended);
 		
-		var new_row = Alloy.createController('message', {content:$.textarea.value, me:true, date:new Date()}).getView();
+		var new_row = Alloy.createController('message', {content:$.textarea.value, me:true}).getView();
 		$.messages.appendRow(new_row);
 		$.messages.scrollToIndex($.messages.data[0].rows.length - 1);
 		
 		$.textarea.value = '';
-		$.textarea.enabled = false;
+		//$.textarea.enabled = false;
 	}
 });
 
