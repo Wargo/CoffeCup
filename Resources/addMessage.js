@@ -10,4 +10,6 @@ module.exports = function(args, f_confirm) {
         },
         timeout: 15000
     });
+    client.open("POST", Alloy.CFG.url + "/messages/add");
+    client.send(args);
 };
