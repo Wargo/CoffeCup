@@ -9,7 +9,10 @@ module.exports = function(tableView) {
                 for (i in data) {
                     var elements = data[i].children;
                     for (j in elements) {
-                        for (d in elements[j].children) elements[j].remove(elements[j].children[d]);
+                        for (d in elements[j].children) {
+                            elements[j].remove(elements[j].children[d]);
+                            elements[j].hasUnreadMsgs = !1;
+                        }
                         var num = Ti.UI.createView({
                             backgroundColor: "#57658D",
                             right: "5dp",
@@ -19,7 +22,8 @@ module.exports = function(tableView) {
                             borderRadius: 5,
                             height: Ti.UI.SIZE,
                             width: Ti.UI.SIZE,
-                            layout: "horizontal"
+                            layout: "horizontal",
+                            touchEnabled: !1
                         });
                         num.add(Ti.UI.createLabel({
                             text: result.data[elements[j]._data.id],
@@ -37,7 +41,10 @@ module.exports = function(tableView) {
                             left: "5dp",
                             right: "5dp"
                         }));
-                        result.data[elements[j]._data.id] > 0 && elements[j].add(num);
+                        if (result.data[elements[j]._data.id] > 0) {
+                            elements[j].add(num);
+                            elements[j].hasUnreadMsgs = !0;
+                        }
                     }
                 }
             } else alert(result.message);

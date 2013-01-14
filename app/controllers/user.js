@@ -15,6 +15,13 @@ $.user.on('open', function() {
 	if ($.loader._loaded == false) {
 		$.loader.show();
 	}
+	if (args.hasUnreadMsgs) {
+		$.textarea.blur();
+		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 330) + 'dp'}, function() {
+			$.messages.animate({opacity:1});
+		});
+		$.prevMsg.text = L('close');
+	}
 });
 
 $.user.on('close', function() {

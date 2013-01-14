@@ -7,9 +7,15 @@ LoadNewMsgs = require('load_new_msgs');
 $.index.on('focus', function() {
 	
 	if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
-		
 		LoadNewMsgs($.table);
-		
+	}
+	
+});
+
+Ti.App.addEventListener('resume', function() {
+	
+	if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
+		LoadNewMsgs($.table);
 	}
 	
 });
@@ -55,6 +61,7 @@ function f_callback(data) {
 			}, 5000);
 		});
 		notify.addEventListener('singletap', function() {
+			current_user.hasUnreadMsgs = true;
 			Alloy.createController('user', current_user).getView().open({left:0});
 		});
 	}
@@ -107,7 +114,9 @@ function setData(data) {
 		
 		user.addEventListener('singletap', function(e) {
 			if (Ti.App.Properties.getString('user_id', null)) {
-				Alloy.createController('user', e.source._data).getView().open({left:0});
+				var aux = e.source._data;
+				aux.hasUnreadMsgs = e.source.hasUnreadMsgs;
+				Alloy.createController('user', aux).getView().open({left:0});
 			} else {
 				var confirm = Ti.UI.createAlertDialog({
 					title:L('confirm'),
@@ -163,10 +172,17 @@ function setData(data) {
 
 $.loader.show();
 
-$.loader.on('singletap', function() {
-	getData(setData);
+$.reload.on('click', function() {
+	$.loader.show();
+	$.reload.opacity = 0;
+	getData(setData, onError);
 });
 
-getData(setData);
+function onError() {
+	$.loader.hide();
+	$.reload.opacity = 1;
+}
+
+getData(setData, onError);
 
 $.index.open();

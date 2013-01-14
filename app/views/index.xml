@@ -4,6 +4,7 @@
 			<Label id="headerTitle" />
 		</View>
 		<ActivityIndicator id="loader" />
+		<ImageView id="reload" />
 		<TableView id="table" />
 	</Window>
 </Alloy>

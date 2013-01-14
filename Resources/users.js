@@ -1,11 +1,12 @@
-module.exports = function(setData) {
+module.exports = function(setData, onError) {
     var client = Ti.Network.createHTTPClient({
         onload: function() {
             var result = JSON.parse(this.responseText);
             (result.status = "ok") ? setData(result.data) : alert(result.message);
         },
         onerror: function(e) {
-            alert(e);
+            Ti.API.error("error de conexión");
+            onError();
         },
         timeout: 15000
     });

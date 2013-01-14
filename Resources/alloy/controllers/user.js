@@ -340,6 +340,17 @@ function Controller() {
     $.user.on("open", function() {
         Ti.App.Properties.setString("current_user_id", args.id);
         $.loader._loaded == 0 && $.loader.show();
+        if (args.hasUnreadMsgs) {
+            $.textarea.blur();
+            $.messageSenderArea.animate({
+                top: Ti.Platform.displayCaps.platformHeight - 330 + "dp"
+            }, function() {
+                $.messages.animate({
+                    opacity: 1
+                });
+            });
+            $.prevMsg.text = L("close");
+        }
     });
     $.user.on("close", function() {
         Ti.App.Properties.setString("current_user_id", null);

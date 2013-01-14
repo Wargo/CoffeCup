@@ -39,6 +39,7 @@ function Controller() {
                 }, 5000);
             });
             notify.addEventListener("singletap", function() {
+                current_user.hasUnreadMsgs = !0;
                 Alloy.createController("user", current_user).getView().open({
                     left: 0
                 });
@@ -67,9 +68,13 @@ function Controller() {
                 e.source.opacity = 1;
             });
             user.addEventListener("singletap", function(e) {
-                if (Ti.App.Properties.getString("user_id", null)) Alloy.createController("user", e.source._data).getView().open({
-                    left: 0
-                }); else {
+                if (Ti.App.Properties.getString("user_id", null)) {
+                    var aux = e.source._data;
+                    aux.hasUnreadMsgs = e.source.hasUnreadMsgs;
+                    Alloy.createController("user", aux).getView().open({
+                        left: 0
+                    });
+                } else {
                     var confirm = Ti.UI.createAlertDialog({
                         title: L("confirm"),
                         message: String.format(L("confirm_msg"), e.source._data.name),
@@ -103,6 +108,10 @@ function Controller() {
         $.table.appendRow(rows);
         LoadNewMsgs($.table);
         $.loader.hide();
+    }
+    function onError() {
+        $.loader.hide();
+        $.reload.opacity = 1;
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
@@ -138,6 +147,15 @@ function Controller() {
         id: "loader"
     }), "ActivityIndicator", $.__views.index);
     $.__views.index.add($.__views.loader);
+    $.__views.reload = A$(Ti.UI.createImageView({
+        image: "images/reload.png",
+        width: "24dp",
+        height: "24dp",
+        opacity: 0,
+        zIndex: 50,
+        id: "reload"
+    }), "ImageView", $.__views.index);
+    $.__views.index.add($.__views.reload);
     $.__views.table = A$(Ti.UI.createTableView({
         top: "50dp",
         backgroundColor: "transparent",
@@ -152,6 +170,9 @@ function Controller() {
     $.index.on("focus", function() {
         typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
     });
+    Ti.App.addEventListener("resume", function() {
+        typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
+    });
     Ti.App.Properties.setString("current_user_id", null);
     var Cloud = require("cloud");
     Ti.App.Properties.getString("user_id", null) == null ? Ti.UI.createAlertDialog({
@@ -162,10 +183,12 @@ function Controller() {
     $.headerTitle.text = L("main_title");
     var getData = require("users");
     $.loader.show();
-    $.loader.on("singletap", function() {
-        getData(setData);
+    $.reload.on("click", function() {
+        $.loader.show();
+        $.reload.opacity = 0;
+        getData(setData, onError);
     });
-    getData(setData);
+    getData(setData, onError);
     $.index.open();
     _.extend($, exports);
 }

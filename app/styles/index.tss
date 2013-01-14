@@ -2,4 +2,11 @@
 	top:'50dp',
 	backgroundColor:'transparent',
 	separatorColor:'transparent'
+},
+'#reload': {
+	image:'images/reload.png',
+	width:'24dp',
+	height:'24dp',
+	opacity:0,
+	zIndex:50
 }

@@ -21,6 +21,7 @@ module.exports = function(tableView) {
 						
 						for (d in elements[j].children) {
 							elements[j].remove(elements[j].children[d]);
+							elements[j].hasUnreadMsgs = false;
 						}
 						
 						var num = Ti.UI.createView({
@@ -32,7 +33,8 @@ module.exports = function(tableView) {
 							borderRadius:5,
 							height:Ti.UI.SIZE,
 							width:Ti.UI.SIZE,
-							layout:'horizontal'
+							layout:'horizontal',
+							touchEnabled:false
 						});
 						
 						num.add(Ti.UI.createLabel({
@@ -51,6 +53,7 @@ module.exports = function(tableView) {
 						
 						if (result.data[elements[j]._data.id] > 0) {
 							elements[j].add(num);
+							elements[j].hasUnreadMsgs = true;
 						}
 						
 					}
