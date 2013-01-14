@@ -8,6 +8,34 @@ function Controller() {
         }
         $.messages.appendRow(messages);
         $.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+        $.msgsLoader.hide();
+    }
+    function send_message() {
+        if ($.textarea.value) {
+            SendMessage({
+                user_id: Ti.App.Properties.getString("user_id"),
+                to_user_id: args.id,
+                content: $.textarea.value
+            }, messageSended);
+            var new_row = Alloy.createController("message", {
+                content: $.textarea.value,
+                me: !0
+            }).getView();
+            $.messages.appendRow(new_row);
+            $.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+            $.textarea.value = "";
+            if ($.prevMsg.text == L("prev_msg")) {
+                $.messageSenderArea.height = "130dp";
+                $.messageSenderArea.animate({
+                    top: Ti.Platform.displayCaps.platformHeight - 330 + "dp"
+                }, function() {
+                    $.messages.animate({
+                        opacity: 1
+                    });
+                });
+                $.prevMsg.text = L("close");
+            }
+        }
     }
     function messageSended() {}
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
@@ -20,12 +48,23 @@ function Controller() {
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
+    $.__views.__alloyId2 = A$(Ti.UI.createTableViewRow({
+        height: "100%",
+        id: "__alloyId2"
+    }), "TableViewRow", null);
+    var __alloyId3 = [];
+    __alloyId3.push($.__views.__alloyId2);
+    $.__views.msgsLoader = A$(Ti.UI.createActivityIndicator({
+        id: "msgsLoader"
+    }), "ActivityIndicator", $.__views.__alloyId2);
+    $.__views.__alloyId2.add($.__views.msgsLoader);
     $.__views.messages = A$(Ti.UI.createTableView({
         zIndex: 50,
         opacity: 0,
         bottom: "330dp",
         backgroundColor: "#9057658D",
         separatorColor: "transparent",
+        data: __alloyId3,
         id: "messages"
     }), "TableView", $.__views.user);
     $.__views.user.add($.__views.messages);
@@ -61,6 +100,10 @@ function Controller() {
         top: "40dp",
         bottom: "10dp",
         enabled: !1,
+        font: {
+            fontSize: "18px"
+        },
+        returnKeyType: Ti.UI.RETURNKEY_SEND,
         id: "textarea"
     }), "TextArea", $.__views.messageSender);
     $.__views.messageSender.add($.__views.textarea);
@@ -97,20 +140,20 @@ function Controller() {
         id: "loader"
     }), "ActivityIndicator", $.__views.avatar);
     $.__views.avatar.add($.__views.loader);
-    $.__views.__alloyId2 = A$(Ti.UI.createView({
+    $.__views.__alloyId4 = A$(Ti.UI.createView({
         backgroundColor: "#57658D",
         top: Ti.Platform.displayCaps.platformHeight,
         layout: "vertical",
-        id: "__alloyId2"
+        id: "__alloyId4"
     }), "View", $.__views.scrollview);
-    $.__views.scrollview.add($.__views.__alloyId2);
-    $.__views.__alloyId3 = A$(Ti.UI.createView({
+    $.__views.scrollview.add($.__views.__alloyId4);
+    $.__views.__alloyId5 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId3"
-    }), "View", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.__alloyId3);
+        id: "__alloyId5"
+    }), "View", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.__alloyId5);
     $.__views.l_birthday = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -120,8 +163,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_birthday"
-    }), "Label", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.l_birthday);
+    }), "Label", $.__views.__alloyId5);
+    $.__views.__alloyId5.add($.__views.l_birthday);
     $.__views.birthday = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -132,15 +175,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "birthday"
-    }), "Label", $.__views.__alloyId3);
-    $.__views.__alloyId3.add($.__views.birthday);
-    $.__views.__alloyId4 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId5);
+    $.__views.__alloyId5.add($.__views.birthday);
+    $.__views.__alloyId6 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId4"
-    }), "View", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.__alloyId4);
+        id: "__alloyId6"
+    }), "View", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.__alloyId6);
     $.__views.l_email = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -150,8 +193,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_email"
-    }), "Label", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.l_email);
+    }), "Label", $.__views.__alloyId6);
+    $.__views.__alloyId6.add($.__views.l_email);
     $.__views.email = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -162,15 +205,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "email"
-    }), "Label", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.email);
-    $.__views.__alloyId5 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId6);
+    $.__views.__alloyId6.add($.__views.email);
+    $.__views.__alloyId7 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId5"
-    }), "View", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.__alloyId5);
+        id: "__alloyId7"
+    }), "View", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.__alloyId7);
     $.__views.l_mobile = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -180,8 +223,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_mobile"
-    }), "Label", $.__views.__alloyId5);
-    $.__views.__alloyId5.add($.__views.l_mobile);
+    }), "Label", $.__views.__alloyId7);
+    $.__views.__alloyId7.add($.__views.l_mobile);
     $.__views.mobile = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -192,15 +235,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "mobile"
-    }), "Label", $.__views.__alloyId5);
-    $.__views.__alloyId5.add($.__views.mobile);
-    $.__views.__alloyId6 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId7);
+    $.__views.__alloyId7.add($.__views.mobile);
+    $.__views.__alloyId8 = A$(Ti.UI.createView({
         height: Ti.UI.SIZE,
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId6"
-    }), "View", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.__alloyId6);
+        id: "__alloyId8"
+    }), "View", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.__alloyId8);
     $.__views.l_talkmeabout = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -211,8 +254,8 @@ function Controller() {
         right: "10dp",
         top: "10dp",
         id: "l_talkmeabout"
-    }), "Label", $.__views.__alloyId6);
-    $.__views.__alloyId6.add($.__views.l_talkmeabout);
+    }), "Label", $.__views.__alloyId8);
+    $.__views.__alloyId8.add($.__views.l_talkmeabout);
     $.__views.talkmeabout = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -224,15 +267,15 @@ function Controller() {
         textAlign: "right",
         top: "40dp",
         id: "talkmeabout"
-    }), "Label", $.__views.__alloyId6);
-    $.__views.__alloyId6.add($.__views.talkmeabout);
-    $.__views.__alloyId7 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId8);
+    $.__views.__alloyId8.add($.__views.talkmeabout);
+    $.__views.__alloyId9 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId7"
-    }), "View", $.__views.__alloyId2);
-    $.__views.__alloyId2.add($.__views.__alloyId7);
+        id: "__alloyId9"
+    }), "View", $.__views.__alloyId4);
+    $.__views.__alloyId4.add($.__views.__alloyId9);
     $.__views.l_icomefrom = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -242,8 +285,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_icomefrom"
-    }), "Label", $.__views.__alloyId7);
-    $.__views.__alloyId7.add($.__views.l_icomefrom);
+    }), "Label", $.__views.__alloyId9);
+    $.__views.__alloyId9.add($.__views.l_icomefrom);
     $.__views.icomefrom = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -254,8 +297,8 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "icomefrom"
-    }), "Label", $.__views.__alloyId7);
-    $.__views.__alloyId7.add($.__views.icomefrom);
+    }), "Label", $.__views.__alloyId9);
+    $.__views.__alloyId9.add($.__views.icomefrom);
     $.__views.infoHeader = A$(Ti.UI.createView({
         backgroundColor: "#8557658D",
         height: Ti.UI.SIZE,
@@ -323,6 +366,7 @@ function Controller() {
     Alloy.CFG.messages = $.messages;
     var GetMessages = require("messages");
     GetMessages(args.id, setMessages);
+    $.msgsLoader.show();
     $.user.on("swipe", function(e) {
         e.direction == "right" && $.user.close({
             left: "320dp"
@@ -381,20 +425,11 @@ function Controller() {
         $.prevMsg.text == L("close") && ($.messageSenderArea.height = "130dp");
     });
     $.send.on("singletap", function() {
-        if ($.textarea.value) {
-            SendMessage({
-                user_id: Ti.App.Properties.getString("user_id"),
-                to_user_id: args.id,
-                content: $.textarea.value
-            }, messageSended);
-            var new_row = Alloy.createController("message", {
-                content: $.textarea.value,
-                me: !0
-            }).getView();
-            $.messages.appendRow(new_row);
-            $.messages.scrollToIndex($.messages.data[0].rows.length - 1);
-            $.textarea.value = "";
-        }
+        send_message();
+    });
+    $.textarea.on("return", function() {
+        $.textarea.focus();
+        send_message();
     });
     $.prevMsg.on("singletap", function() {
         if ($.prevMsg.text == L("close")) {

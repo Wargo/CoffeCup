@@ -50,6 +50,8 @@ var GetMessages = require('messages');
 
 GetMessages(args.id, setMessages);
 
+$.msgsLoader.show();
+
 function setMessages(messagesData) {
 	
 	$.messages.data = [];
@@ -67,6 +69,8 @@ function setMessages(messagesData) {
 	$.messages.appendRow(messages);
 	
 	$.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+	
+	$.msgsLoader.hide();
 	
 }
 
@@ -124,6 +128,14 @@ $.textarea.on('focus', function() {
 });
 
 $.send.on('singletap', function() {
+	send_message();
+});
+$.textarea.on('return', function() {
+	$.textarea.focus();
+	send_message();
+});
+
+function send_message() {
 	if ($.textarea.value) {
 		//$.messageSenderArea.animate({top:'-210dp'});
 		SendMessage({
@@ -137,9 +149,18 @@ $.send.on('singletap', function() {
 		$.messages.scrollToIndex($.messages.data[0].rows.length - 1);
 		
 		$.textarea.value = '';
+		
+		if ($.prevMsg.text == L('prev_msg')) {
+			$.messageSenderArea.height = '130dp';
+			$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 330) + 'dp'}, function() {
+				$.messages.animate({opacity:1});
+			});
+			$.prevMsg.text = L('close');
+		}
+		
 		//$.textarea.enabled = false;
 	}
-});
+}
 
 $.prevMsg.on('singletap', function() {
 	if ($.prevMsg.text == L('close')) {

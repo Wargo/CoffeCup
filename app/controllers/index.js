@@ -10,19 +10,20 @@ f_callback({
 }, 10000);
 */
 function f_callback(data) {
+	var bbdd = Ti.App.Properties.getList('data');
+	for (i in bbdd) {
+		if (bbdd[i].id == data.from_id) {
+			var current_user = bbdd[i];
+		}
+	}
+	
 	if (data.from_id == Ti.App.Properties.getString('current_user_id', null)) {
-		var new_row = Alloy.createController('message', {content:data.alert}).getView();
+		var message = data.alert.replace(current_user.name + ': ', '');
+		var new_row = Alloy.createController('message', {content:message}).getView();
 		var messages = Alloy.CFG.messages;
 		messages.appendRow(new_row);
 		messages.scrollToIndex(messages.data[0].rows.length - 1);
 	} else {
-		var bbdd = Ti.App.Properties.getList('data');
-		for (i in bbdd) {
-			if (bbdd[i].id == data.from_id) {
-				var current_user = bbdd[i];
-			}
-		}
-		
 		var notify = Ti.UI.createView({
 			zIndex:150,
 			bottom:'-50dp',
@@ -33,7 +34,7 @@ function f_callback(data) {
 			borderRadius:5
 		});
 		notify.add(Ti.UI.createLabel({
-			text:current_user.name + ': ' + data.alert,
+			text:data.alert,
 			top:'5dp',
 			right:'5dp',
 			left:'5dp',
@@ -53,7 +54,9 @@ function f_callback(data) {
 	}
 }
 
-Ti.App.Properties.setString('current_user_id', null)
+Ti.App.Properties.setString('current_user_id', null);
+
+var Cloud = require('cloud');
 
 if (Ti.App.Properties.getString('user_id', null) == null) {
 	Ti.UI.createAlertDialog({
@@ -62,7 +65,6 @@ if (Ti.App.Properties.getString('user_id', null) == null) {
 		ok:L('ok')
 	}).show();
 } else {
-	var Cloud = require('cloud');
 	Cloud(f_callback);
 }
 
@@ -118,6 +120,7 @@ function setData(data) {
 							ok:L('ok')
 						}).show();
 						Ti.App.Properties.setString('user_id', e.source._data.id);
+						Cloud(f_callback);
 					}
 				});
 				

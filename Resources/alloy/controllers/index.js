@@ -1,14 +1,14 @@
 function Controller() {
     function f_callback(data) {
+        var bbdd = Ti.App.Properties.getList("data");
+        for (i in bbdd) if (bbdd[i].id == data.from_id) var current_user = bbdd[i];
         if (data.from_id == Ti.App.Properties.getString("current_user_id", null)) {
-            var new_row = Alloy.createController("message", {
-                content: data.alert
+            var message = data.alert.replace(current_user.name + ": ", ""), new_row = Alloy.createController("message", {
+                content: message
             }).getView(), messages = Alloy.CFG.messages;
             messages.appendRow(new_row);
             messages.scrollToIndex(messages.data[0].rows.length - 1);
         } else {
-            var bbdd = Ti.App.Properties.getList("data");
-            for (i in bbdd) if (bbdd[i].id == data.from_id) var current_user = bbdd[i];
             var notify = Ti.UI.createView({
                 zIndex: 150,
                 bottom: "-50dp",
@@ -19,7 +19,7 @@ function Controller() {
                 borderRadius: 5
             });
             notify.add(Ti.UI.createLabel({
-                text: current_user.name + ": " + data.alert,
+                text: data.alert,
                 top: "5dp",
                 right: "5dp",
                 left: "5dp",
@@ -84,6 +84,7 @@ function Controller() {
                                 ok: L("ok")
                             }).show();
                             Ti.App.Properties.setString("user_id", e.source._data.id);
+                            Cloud(f_callback);
                         }
                     });
                 }
@@ -141,14 +142,12 @@ function Controller() {
     _.extend($, $.__views);
     Ti.Platform.osname != "android" && require("ti.viewshadow");
     Ti.App.Properties.setString("current_user_id", null);
-    if (Ti.App.Properties.getString("user_id", null) == null) Ti.UI.createAlertDialog({
+    var Cloud = require("cloud");
+    Ti.App.Properties.getString("user_id", null) == null ? Ti.UI.createAlertDialog({
         title: L("welcome"),
         message: L("welcome_message"),
         ok: L("ok")
-    }).show(); else {
-        var Cloud = require("cloud");
-        Cloud(f_callback);
-    }
+    }).show() : Cloud(f_callback);
     $.headerTitle.text = L("main_title");
     var getData = require("users");
     getData(setData);

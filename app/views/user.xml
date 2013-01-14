@@ -1,6 +1,10 @@
 <Alloy>
 	<Window class="win">
-		<TableView id="messages" />
+		<TableView id="messages">
+			<TableViewRow height="100%">
+				<ActivityIndicator id="msgsLoader" />
+			</TableViewRow>
+		</TableView>
 		<View id="messageSenderArea">
 			<View id="messageSender">
 				<Label id="prevMsg" class="right top" />

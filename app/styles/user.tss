@@ -73,7 +73,9 @@
 	right:'10dp',
 	top:'40dp',
 	bottom:'10dp',
-	enabled:false
+	enabled:false,
+	font:{fontSize:'18px'},
+	returnKeyType:Ti.UI.RETURNKEY_SEND
 },
 '#prev_msg': {
 	top:'5dp',
