@@ -102,6 +102,7 @@ function Controller() {
         }
         $.table.appendRow(rows);
         LoadNewMsgs($.table);
+        $.loader.hide();
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
@@ -133,6 +134,10 @@ function Controller() {
         id: "headerTitle"
     }), "Label", $.__views.__alloyId1);
     $.__views.__alloyId1.add($.__views.headerTitle);
+    $.__views.loader = A$(Ti.UI.createActivityIndicator({
+        id: "loader"
+    }), "ActivityIndicator", $.__views.index);
+    $.__views.index.add($.__views.loader);
     $.__views.table = A$(Ti.UI.createTableView({
         top: "50dp",
         backgroundColor: "transparent",
@@ -156,6 +161,10 @@ function Controller() {
     }).show() : Cloud(f_callback);
     $.headerTitle.text = L("main_title");
     var getData = require("users");
+    $.loader.show();
+    $.loader.on("singletap", function() {
+        getData(setData);
+    });
     getData(setData);
     $.index.open();
     _.extend($, exports);

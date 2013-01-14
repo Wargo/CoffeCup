@@ -3,6 +3,7 @@
 		<View class="mainHeader">
 			<Label id="headerTitle" />
 		</View>
+		<ActivityIndicator id="loader" />
 		<TableView id="table" />
 	</Window>
 </Alloy>

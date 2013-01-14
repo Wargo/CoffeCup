@@ -44,7 +44,12 @@ $.l_icomefrom.text = L('icomefrom');
 
 $.prevMsg.text = L('prev_msg');
 
-Ti.UI.iPhone.appBadge = 0;
+if (args.mobile) {
+	$.block_mobile.add(Ti.UI.createImageView({image:'images/phone.png', right:'100dp', height:'30dp'}));;
+	$.block_mobile.on('singletap', function() {
+		Ti.Platform.openURL('tel:' + args.mobile);
+	});
+}
 
 Alloy.CFG.messages =  $.messages;
 

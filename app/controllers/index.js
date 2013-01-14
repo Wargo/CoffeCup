@@ -157,7 +157,15 @@ function setData(data) {
 	
 	LoadNewMsgs($.table);
 	
+	$.loader.hide();
+	
 }
+
+$.loader.show();
+
+$.loader.on('singletap', function() {
+	getData(setData);
+});
 
 getData(setData);
 

@@ -207,13 +207,13 @@ function Controller() {
         id: "email"
     }), "Label", $.__views.__alloyId6);
     $.__views.__alloyId6.add($.__views.email);
-    $.__views.__alloyId7 = A$(Ti.UI.createView({
+    $.__views.block_mobile = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId7"
+        id: "block_mobile"
     }), "View", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.__alloyId7);
+    $.__views.__alloyId4.add($.__views.block_mobile);
     $.__views.l_mobile = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -223,8 +223,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_mobile"
-    }), "Label", $.__views.__alloyId7);
-    $.__views.__alloyId7.add($.__views.l_mobile);
+    }), "Label", $.__views.block_mobile);
+    $.__views.block_mobile.add($.__views.l_mobile);
     $.__views.mobile = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -235,15 +235,15 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "mobile"
-    }), "Label", $.__views.__alloyId7);
-    $.__views.__alloyId7.add($.__views.mobile);
-    $.__views.__alloyId8 = A$(Ti.UI.createView({
+    }), "Label", $.__views.block_mobile);
+    $.__views.block_mobile.add($.__views.mobile);
+    $.__views.__alloyId7 = A$(Ti.UI.createView({
         height: Ti.UI.SIZE,
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId8"
+        id: "__alloyId7"
     }), "View", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.__alloyId8);
+    $.__views.__alloyId4.add($.__views.__alloyId7);
     $.__views.l_talkmeabout = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -254,8 +254,8 @@ function Controller() {
         right: "10dp",
         top: "10dp",
         id: "l_talkmeabout"
-    }), "Label", $.__views.__alloyId8);
-    $.__views.__alloyId8.add($.__views.l_talkmeabout);
+    }), "Label", $.__views.__alloyId7);
+    $.__views.__alloyId7.add($.__views.l_talkmeabout);
     $.__views.talkmeabout = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -267,15 +267,15 @@ function Controller() {
         textAlign: "right",
         top: "40dp",
         id: "talkmeabout"
-    }), "Label", $.__views.__alloyId8);
-    $.__views.__alloyId8.add($.__views.talkmeabout);
-    $.__views.__alloyId9 = A$(Ti.UI.createView({
+    }), "Label", $.__views.__alloyId7);
+    $.__views.__alloyId7.add($.__views.talkmeabout);
+    $.__views.__alloyId8 = A$(Ti.UI.createView({
         height: "70dp",
         borderColor: "#CCC",
         borderWidth: 1,
-        id: "__alloyId9"
+        id: "__alloyId8"
     }), "View", $.__views.__alloyId4);
-    $.__views.__alloyId4.add($.__views.__alloyId9);
+    $.__views.__alloyId4.add($.__views.__alloyId8);
     $.__views.l_icomefrom = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -285,8 +285,8 @@ function Controller() {
         left: "10dp",
         right: "10dp",
         id: "l_icomefrom"
-    }), "Label", $.__views.__alloyId9);
-    $.__views.__alloyId9.add($.__views.l_icomefrom);
+    }), "Label", $.__views.__alloyId8);
+    $.__views.__alloyId8.add($.__views.l_icomefrom);
     $.__views.icomefrom = A$(Ti.UI.createLabel({
         color: "white",
         font: {
@@ -297,8 +297,8 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         id: "icomefrom"
-    }), "Label", $.__views.__alloyId9);
-    $.__views.__alloyId9.add($.__views.icomefrom);
+    }), "Label", $.__views.__alloyId8);
+    $.__views.__alloyId8.add($.__views.icomefrom);
     $.__views.infoHeader = A$(Ti.UI.createView({
         backgroundColor: "#8557658D",
         height: Ti.UI.SIZE,
@@ -363,7 +363,16 @@ function Controller() {
     $.l_talkmeabout.text = L("talkmeabout");
     $.l_icomefrom.text = L("icomefrom");
     $.prevMsg.text = L("prev_msg");
-    Ti.UI.iPhone.appBadge = 0;
+    if (args.mobile) {
+        $.block_mobile.add(Ti.UI.createImageView({
+            image: "images/phone.png",
+            right: "100dp",
+            height: "30dp"
+        }));
+        $.block_mobile.on("singletap", function() {
+            Ti.Platform.openURL("tel:" + args.mobile);
+        });
+    }
     Alloy.CFG.messages = $.messages;
     var GetMessages = require("messages");
     GetMessages(args.id, setMessages);

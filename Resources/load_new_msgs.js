@@ -4,6 +4,7 @@ module.exports = function(tableView) {
             Ti.API.error(this.responseText);
             var result = JSON.parse(this.responseText);
             if (result.status == "ok") {
+                Ti.UI.iPhone.appBadge = result.total;
                 var data = tableView.data[0].rows;
                 for (i in data) {
                     var elements = data[i].children;

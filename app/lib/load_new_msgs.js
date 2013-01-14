@@ -9,6 +9,8 @@ module.exports = function(tableView) {
 			
 			if (result.status == 'ok') {
 				
+				Ti.UI.iPhone.appBadge = result.total;
+				
 				var data = tableView.data[0].rows;
 				
 				for (i in data) {

@@ -27,7 +27,7 @@
 					<Label id="l_email" />
 					<Label id="email" class="right" />
 				</View>
-				<View class="step">
+				<View class="step" id="block_mobile">
 					<Label id="l_mobile" />
 					<Label id="mobile" class="right" />
 				</View>
