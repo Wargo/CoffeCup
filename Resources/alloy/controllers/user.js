@@ -334,7 +334,8 @@ function Controller() {
     _.extend($, $.__views);
     var args = arguments[0] || {};
     args.id == Ti.App.Properties.getString("user_id") && $.messageSenderArea.parent.remove($.messageSenderArea);
-    var SendMessage = require("addMessage");
+    var SendMessage = require("addMessage"), MarkAsRead = require("markAsRead");
+    MarkAsRead(args.id);
     $.loader._loaded = !1;
     $.user.on("open", function() {
         Ti.App.Properties.setString("current_user_id", args.id);

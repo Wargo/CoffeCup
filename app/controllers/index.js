@@ -1,14 +1,19 @@
 if (Ti.Platform.osname != 'android') {
 	require('ti.viewshadow');
 }
-/*
-setTimeout(function() {
-f_callback({
-	from_id:'50eda1ed-c248-4d14-affb-3415b4188753',
-	alert:'mensaje de texto'
+
+LoadNewMsgs = require('load_new_msgs');
+
+$.index.on('focus', function() {
+	
+	if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
+		
+		LoadNewMsgs($.table);
+		
+	}
+	
 });
-}, 10000);
-*/
+
 function f_callback(data) {
 	var bbdd = Ti.App.Properties.getList('data');
 	for (i in bbdd) {
@@ -24,6 +29,7 @@ function f_callback(data) {
 		messages.appendRow(new_row);
 		messages.scrollToIndex(messages.data[0].rows.length - 1);
 	} else {
+		LoadNewMsgs($.table);
 		var notify = Ti.UI.createView({
 			zIndex:150,
 			bottom:'-50dp',
@@ -148,6 +154,8 @@ function setData(data) {
 	}
 	
 	$.table.appendRow(rows);
+	
+	LoadNewMsgs($.table);
 	
 }
 

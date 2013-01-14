@@ -9,6 +9,7 @@ function Controller() {
             messages.appendRow(new_row);
             messages.scrollToIndex(messages.data[0].rows.length - 1);
         } else {
+            LoadNewMsgs($.table);
             var notify = Ti.UI.createView({
                 zIndex: 150,
                 bottom: "-50dp",
@@ -100,6 +101,7 @@ function Controller() {
             row.add(user);
         }
         $.table.appendRow(rows);
+        LoadNewMsgs($.table);
     }
     require("alloy/controllers/BaseController").apply(this, Array.prototype.slice.call(arguments));
     $model = arguments[0] ? arguments[0].$model : null;
@@ -141,6 +143,10 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.Platform.osname != "android" && require("ti.viewshadow");
+    LoadNewMsgs = require("load_new_msgs");
+    $.index.on("focus", function() {
+        typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
+    });
     Ti.App.Properties.setString("current_user_id", null);
     var Cloud = require("cloud");
     Ti.App.Properties.getString("user_id", null) == null ? Ti.UI.createAlertDialog({

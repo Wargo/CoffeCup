@@ -5,6 +5,8 @@ if (args.id == Ti.App.Properties.getString('user_id')) {
 }
 
 var SendMessage = require('addMessage');
+var MarkAsRead = require('markAsRead');
+MarkAsRead(args.id);
 
 $.loader._loaded = false;
 
