@@ -120,8 +120,12 @@ $.scrollview.on('dragend', function(e) {
 
 $.messageSenderArea.on('swipe', function(e) {
 	if (e.direction == 'down') {
-		$.messageSenderArea.animate({top:0});
+		//$.messageSenderArea.animate({top:0});
 		$.textarea.enabled = true;
+		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 330) + 'dp'}, function() {
+			$.messages.animate({opacity:1});
+			$.prevMsg.text = L('close');
+		});
 	} else if (e.direction == 'up') {
 		$.messageSenderArea.animate({top:'-210dp'}, function() {
 			$.messages.animate({opacity:0});

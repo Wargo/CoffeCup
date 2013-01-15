@@ -91,13 +91,14 @@ function Controller() {
         right: "10dp",
         textAlign: "right",
         top: "10dp",
+        opacity: 0,
         id: "prevMsg"
     }), "Label", $.__views.messageSender);
     $.__views.messageSender.add($.__views.prevMsg);
     $.__views.textarea = A$(Ti.UI.createTextArea({
         left: "10dp",
         right: "10dp",
-        top: "40dp",
+        top: "10dp",
         bottom: "10dp",
         enabled: !1,
         font: {
@@ -422,10 +423,15 @@ function Controller() {
     });
     $.messageSenderArea.on("swipe", function(e) {
         if (e.direction == "down") {
-            $.messageSenderArea.animate({
-                top: 0
-            });
             $.textarea.enabled = !0;
+            $.messageSenderArea.animate({
+                top: Ti.Platform.displayCaps.platformHeight - 330 + "dp"
+            }, function() {
+                $.messages.animate({
+                    opacity: 1
+                });
+                $.prevMsg.text = L("close");
+            });
         } else if (e.direction == "up") {
             $.messageSenderArea.animate({
                 top: "-210dp"

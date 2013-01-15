@@ -93,16 +93,23 @@ function setData(data) {
 	
 	for (i in data) {
 		
-		var user = Ti.UI.createImageView({
-			defaultImage:'none',
-			image:data[i].img_p,
+		var user = Ti.UI.createButton({
 			width:'100dp',
 			height:'165dp',
 			left:'5dp',
 			top:'5dp',
+			backgroundImage:data[i].img_p,
 			_data:data[i]
 		});
 		
+		/*user.add(Ti.UI.createImageView({
+			defaultImage:'none',
+			image:data[i].img_p,
+			width:'100dp',
+			height:'165dp',
+			touchEnabled:false
+		}));*/
+		/*
 		user.addEventListener('touchstart', function(e) {
 			$.table.scrollable = false;
 			e.source.opacity = 0.5;
@@ -111,7 +118,7 @@ function setData(data) {
 			$.table.scrollable = true;
 			e.source.opacity = 1;
 		});
-		
+		*/
 		user.addEventListener('singletap', function(e) {
 			if (Ti.App.Properties.getString('user_id', null)) {
 				var aux = e.source._data;

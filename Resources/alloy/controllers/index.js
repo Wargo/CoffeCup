@@ -50,22 +50,13 @@ function Controller() {
         Ti.App.Properties.setList("data", data);
         var rows = [];
         for (i in data) {
-            var user = Ti.UI.createImageView({
-                defaultImage: "none",
-                image: data[i].img_p,
+            var user = Ti.UI.createButton({
                 width: "100dp",
                 height: "165dp",
                 left: "5dp",
                 top: "5dp",
+                backgroundImage: data[i].img_p,
                 _data: data[i]
-            });
-            user.addEventListener("touchstart", function(e) {
-                $.table.scrollable = !1;
-                e.source.opacity = 0.5;
-            });
-            user.addEventListener("touchend", function(e) {
-                $.table.scrollable = !0;
-                e.source.opacity = 1;
             });
             user.addEventListener("singletap", function(e) {
                 if (Ti.App.Properties.getString("user_id", null)) {

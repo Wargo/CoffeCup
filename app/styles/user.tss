@@ -71,16 +71,14 @@
 '#textarea': {
 	left:'10dp',
 	right:'10dp',
-	top:'40dp',
+	top:'10dp',
 	bottom:'10dp',
 	enabled:false,
 	font:{fontSize:'18px'},
 	returnKeyType:Ti.UI.RETURNKEY_SEND
 },
-'#prev_msg': {
-	top:'5dp',
-	shadowColor:'#333',
-	shadowOffset:{x:1,y:1}
+'#prevMsg': {
+	opacity:0
 },
 '#messages': {
 	zIndex:50,
