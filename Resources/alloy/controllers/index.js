@@ -50,9 +50,7 @@ function Controller() {
         Ti.App.Properties.setList("data", data);
         var rows = [];
         for (i in data) {
-            var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + data[i].id + ".jpg");
-            l = Ti.UI.createActivityIndicator();
-            var user = Ti.UI.createButton({
+            var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + data[i].id + ".jpg"), l = Ti.UI.createActivityIndicator(), user = Ti.UI.createButton({
                 width: "100dp",
                 height: "165dp",
                 left: "5dp",

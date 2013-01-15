@@ -17,6 +17,7 @@ $.user.on('open', function() {
 	}
 	if (args.hasUnreadMsgs) {
 		$.textarea.blur();
+		$.textarea.enabled = true;
 		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 330) + 'dp'}, function() {
 			$.messages.animate({opacity:1});
 		});

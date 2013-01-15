@@ -343,6 +343,7 @@ function Controller() {
         $.loader._loaded == 0 && $.loader.show();
         if (args.hasUnreadMsgs) {
             $.textarea.blur();
+            $.textarea.enabled = !0;
             $.messageSenderArea.animate({
                 top: Ti.Platform.displayCaps.platformHeight - 330 + "dp"
             }, function() {
