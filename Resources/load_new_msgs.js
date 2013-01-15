@@ -10,7 +10,7 @@ module.exports = function(tableView) {
                     var elements = data[i].children;
                     for (j in elements) {
                         for (d in elements[j].children) {
-                            elements[j].remove(elements[j].children[d]);
+                            elements[j].children[d]._image || elements[j].remove(elements[j].children[d]);
                             elements[j].hasUnreadMsgs = !1;
                         }
                         var num = Ti.UI.createView({

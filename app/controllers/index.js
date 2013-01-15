@@ -93,23 +93,51 @@ function setData(data) {
 	
 	for (i in data) {
 		
+		var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + data[i].id + '.jpg');
+		
+		var l = Ti.UI.createActivityIndicator();
+		
 		var user = Ti.UI.createButton({
 			width:'100dp',
 			height:'165dp',
 			left:'5dp',
 			top:'5dp',
-			backgroundImage:data[i].img_p,
-			_data:data[i]
+			backgroundImage:'none',
+			_data:data[i],
+			_l:l,
+			_file:file
 		});
 		
-		/*user.add(Ti.UI.createImageView({
+		if (file.exists()) {
+			user.image = file.nativePath;
+		} else {
+			user.add(l);
+			l.show();
+			
+			user.addEventListener('postlayout', function(e) {
+				var client = Ti.Network.createHTTPClient({
+					onload:function() {
+						e.source.image = this.responseData;
+						e.source.addEventListener('load', function(e2) {
+							e2.source._l.hide();
+						});
+						e.source._file.write(this.responseData);
+					}
+				});
+				client.open('GET', e.source._data.img_p);
+				client.send();
+			});
+		}
+		
+		/*
+		user.add(Ti.UI.createImageView({
 			defaultImage:'none',
 			image:data[i].img_p,
 			width:'100dp',
 			height:'165dp',
-			touchEnabled:false
-		}));*/
-		/*
+			_image:true
+		}));
+		
 		user.addEventListener('touchstart', function(e) {
 			$.table.scrollable = false;
 			e.source.opacity = 0.5;

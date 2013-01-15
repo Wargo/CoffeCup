@@ -20,7 +20,9 @@ module.exports = function(tableView) {
 					for (j in elements) {
 						
 						for (d in elements[j].children) {
-							elements[j].remove(elements[j].children[d]);
+							if (!elements[j].children[d]._image) {
+								elements[j].remove(elements[j].children[d]);
+							}
 							elements[j].hasUnreadMsgs = false;
 						}
 						
