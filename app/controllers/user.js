@@ -37,15 +37,11 @@ $.avatar.on('load', function() {
 
 var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + args.id + '_big.jpg');
 if (file.exists()) {
-	Ti.API.info('existe')
 	$.avatar.image = file.nativePath;
 } else {
-	Ti.API.info('no existe')
 	var client = Ti.Network.createHTTPClient({
 		onload:function() {
-			Ti.API.info('load')
 			$.avatar.image = this.responseData;
-			//e.source._l.hide();
 			file.write(this.responseData);
 		},
 		ondatastream:function(e) {
