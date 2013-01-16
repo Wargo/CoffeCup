@@ -2,6 +2,20 @@ if (Ti.Platform.osname != 'android') {
 	require('ti.viewshadow');
 }
 
+$.headerTitle.on('doubletap', function() {
+	var files = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory);
+	var aux = files.getDirectoryListing();
+	for (i in aux) {
+		var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + aux[i]);
+		if (file.exists()) {
+			file.deleteFile();
+		}
+	}
+	$.loader.show();
+	$.table.data = [];
+	getData(setData, onError);
+});
+
 LoadNewMsgs = require('load_new_msgs');
 
 $.index.on('focus', function() {
@@ -91,11 +105,9 @@ function setData(data) {
 	
 	var rows = [];
 	
-	for (i in data) {
+	for (var i in data) {
 		
 		var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + data[i].id + '.jpg');
-		
-		var l = Ti.UI.createActivityIndicator();
 		
 		var user = Ti.UI.createButton({
 			width:'100dp',
@@ -104,23 +116,23 @@ function setData(data) {
 			top:'5dp',
 			backgroundImage:'none',
 			_data:data[i],
-			_l:l,
+			_l:Ti.UI.createActivityIndicator({
+				_dont_delete_me:true
+			}),
 			_file:file
 		});
 		
 		if (file.exists()) {
 			user.image = file.nativePath;
 		} else {
-			user.add(l);
-			l.show();
+			user.add(user._l);
+			user._l.show();
 			
 			user.addEventListener('postlayout', function(e) {
 				var client = Ti.Network.createHTTPClient({
 					onload:function() {
 						e.source.image = this.responseData;
-						e.source.addEventListener('load', function(e2) {
-							e2.source._l.hide();
-						});
+						e.source._l.hide();
 						e.source._file.write(this.responseData);
 					}
 				});

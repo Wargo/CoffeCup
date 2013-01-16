@@ -9,8 +9,8 @@ module.exports = function(tableView) {
                 for (i in data) {
                     var elements = data[i].children;
                     for (j in elements) {
-                        for (d in elements[j].children) {
-                            elements[j].children[d]._image || elements[j].remove(elements[j].children[d]);
+                        if (elements[j]._num) {
+                            elements[j].remove(elements[j]._num);
                             elements[j].hasUnreadMsgs = !1;
                         }
                         var num = Ti.UI.createView({
@@ -23,7 +23,8 @@ module.exports = function(tableView) {
                             height: Ti.UI.SIZE,
                             width: Ti.UI.SIZE,
                             layout: "horizontal",
-                            touchEnabled: !1
+                            touchEnabled: !1,
+                            _unreadMsg: !0
                         });
                         num.add(Ti.UI.createLabel({
                             text: result.data[elements[j]._data.id],
@@ -43,6 +44,7 @@ module.exports = function(tableView) {
                         }));
                         if (result.data[elements[j]._data.id] > 0) {
                             elements[j].add(num);
+                            elements[j]._num = num;
                             elements[j].hasUnreadMsgs = !0;
                         }
                     }

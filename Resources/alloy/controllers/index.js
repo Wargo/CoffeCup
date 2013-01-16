@@ -49,27 +49,27 @@ function Controller() {
     function setData(data) {
         Ti.App.Properties.setList("data", data);
         var rows = [];
-        for (i in data) {
-            var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + data[i].id + ".jpg"), l = Ti.UI.createActivityIndicator(), user = Ti.UI.createButton({
+        for (var i in data) {
+            var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + data[i].id + ".jpg"), user = Ti.UI.createButton({
                 width: "100dp",
                 height: "165dp",
                 left: "5dp",
                 top: "5dp",
                 backgroundImage: "none",
                 _data: data[i],
-                _l: l,
+                _l: Ti.UI.createActivityIndicator({
+                    _dont_delete_me: !0
+                }),
                 _file: file
             });
             if (file.exists()) user.image = file.nativePath; else {
-                user.add(l);
-                l.show();
+                user.add(user._l);
+                user._l.show();
                 user.addEventListener("postlayout", function(e) {
                     var client = Ti.Network.createHTTPClient({
                         onload: function() {
                             e.source.image = this.responseData;
-                            e.source.addEventListener("load", function(e2) {
-                                e2.source._l.hide();
-                            });
+                            e.source._l.hide();
                             e.source._file.write(this.responseData);
                         }
                     });
@@ -176,6 +176,16 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     Ti.Platform.osname != "android" && require("ti.viewshadow");
+    $.headerTitle.on("doubletap", function() {
+        var files = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory), aux = files.getDirectoryListing();
+        for (i in aux) {
+            var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + aux[i]);
+            file.exists() && file.deleteFile();
+        }
+        $.loader.show();
+        $.table.data = [];
+        getData(setData, onError);
+    });
     LoadNewMsgs = require("load_new_msgs");
     $.index.on("focus", function() {
         typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
