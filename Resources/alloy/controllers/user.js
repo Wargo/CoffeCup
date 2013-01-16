@@ -138,6 +138,10 @@ function Controller() {
     }), "ImageView", $.__views.scrollview);
     $.__views.scrollview.add($.__views.avatar);
     $.__views.loader = A$(Ti.UI.createActivityIndicator({
+        color: "#CCC",
+        font: {
+            fontSize: "13px"
+        },
         id: "loader"
     }), "ActivityIndicator", $.__views.avatar);
     $.__views.avatar.add($.__views.loader);
@@ -362,7 +366,25 @@ function Controller() {
         $.loader._loaded = !0;
         $.avatar.add($.infoHeader);
     });
-    $.avatar.image = args.img_b;
+    var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + args.id + "_big.jpg");
+    if (file.exists()) {
+        Ti.API.info("existe");
+        $.avatar.image = file.nativePath;
+    } else {
+        Ti.API.info("no existe");
+        var client = Ti.Network.createHTTPClient({
+            onload: function() {
+                Ti.API.info("load");
+                $.avatar.image = this.responseData;
+                file.write(this.responseData);
+            },
+            ondatastream: function(e) {
+                $.loader.message = Math.round(e.progress * 100) + " %";
+            }
+        });
+        client.open("GET", args.img_b);
+        client.send();
+    }
     $.name.text = args.name;
     $.charge.text = args.charge;
     $.email.text = args.email;

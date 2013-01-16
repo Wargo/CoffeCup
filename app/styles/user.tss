@@ -86,4 +86,8 @@
 	bottom:'330dp',
 	backgroundColor:'#9057658D',
 	separatorColor:'transparent'
+},
+'#loader':{
+	color:'#CCC',
+	font:{fontSize:'13px'}
 }
