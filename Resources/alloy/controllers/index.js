@@ -41,6 +41,10 @@ function Controller() {
                 $.index.currentUser.getView().open({
                     left: 0
                 });
+                $.index.currentUser.getView().on("close", function() {
+                    $.index.currentUser = null;
+                    typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
+                });
             });
         }
     }
@@ -85,6 +89,7 @@ function Controller() {
                     });
                     $.index.currentUser.getView().on("close", function() {
                         $.index.currentUser = null;
+                        typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
                     });
                 } else {
                     var confirm = Ti.UI.createAlertDialog({
@@ -189,18 +194,9 @@ function Controller() {
         getData(setData, onError);
     });
     LoadNewMsgs = require("load_new_msgs");
-    $.index.on("focus", function() {
-        typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
-    });
     Ti.App.addEventListener("resume", function() {
         typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
     });
-    setInterval(function() {
-        f_callback({
-            from_id: "50edb22f-a7dc-47de-b1c9-2afebca5d2a0",
-            alert: "acho qué?"
-        });
-    }, 10000);
     Ti.App.Properties.setString("current_user_id", null);
     var Cloud = require("cloud");
     Ti.App.Properties.getString("user_id", null) == null ? Ti.UI.createAlertDialog({

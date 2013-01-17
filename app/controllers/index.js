@@ -18,14 +18,6 @@ $.headerTitle.on('doubletap', function() {
 
 LoadNewMsgs = require('load_new_msgs');
 
-$.index.on('focus', function() {
-	
-	if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
-		LoadNewMsgs($.table);
-	}
-	
-});
-
 Ti.App.addEventListener('resume', function() {
 	
 	if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
@@ -80,6 +72,12 @@ function f_callback(data) {
 			current_user.hasUnreadMsgs = true;
 			$.index.currentUser = Alloy.createController('user', current_user);
 			$.index.currentUser.getView().open({left:0});
+			$.index.currentUser.getView().on('close', function(){
+				$.index.currentUser = null;
+				if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
+					LoadNewMsgs($.table);
+				}
+			});
 		});
 		
 	}
@@ -169,11 +167,12 @@ function setData(data) {
 				aux.hasUnreadMsgs = e.source.hasUnreadMsgs;
 				$.index.currentUser = Alloy.createController('user', aux);
 				$.index.currentUser.getView().open({left:0});
-				
 				$.index.currentUser.getView().on('close', function(){
 					$.index.currentUser = null;
+					if (typeof $.table.data[0] != 'undefined' && $.table.data[0].rows.length > 0) {
+						LoadNewMsgs($.table);
+					}
 				});
-				
 			} else {
 				var confirm = Ti.UI.createAlertDialog({
 					title:L('confirm'),
