@@ -2,15 +2,12 @@ function Controller() {
     function f_callback(data) {
         var bbdd = Ti.App.Properties.getList("data");
         for (i in bbdd) if (bbdd[i].id == data.from_id) var current_user = bbdd[i];
-        if (data.from_id == Ti.App.Properties.getString("current_user_id", null)) {
-            var message = data.alert.replace(current_user.name + ": ", ""), new_row = Alloy.createController("message", {
-                content: message
-            }).getView(), messages = Alloy.CFG.messages;
-            messages.appendRow(new_row);
-            messages.scrollToIndex(messages.data[0].rows.length - 1);
+        if ($.index.currentUser && $.index.currentUser.id == data.from_id) {
+            var message = data.alert.replace(current_user.name + ": ", "");
+            $.index.currentUser.receiveNotification(message);
         } else {
             LoadNewMsgs($.table);
-            var notify = Ti.UI.createView({
+            var notify = Ti.UI.createWindow({
                 zIndex: 150,
                 bottom: "-50dp",
                 height: "50dp",
@@ -28,7 +25,7 @@ function Controller() {
                 color: "#FFF",
                 textAlign: "center"
             }));
-            $.index.add(notify);
+            notify.open();
             notify.animate({
                 bottom: "-5"
             }, function() {
@@ -40,7 +37,8 @@ function Controller() {
             });
             notify.addEventListener("singletap", function() {
                 current_user.hasUnreadMsgs = !0;
-                Alloy.createController("user", current_user).getView().open({
+                $.index.currentUser = Alloy.createController("user", current_user);
+                $.index.currentUser.getView().open({
                     left: 0
                 });
             });
@@ -81,8 +79,12 @@ function Controller() {
                 if (Ti.App.Properties.getString("user_id", null)) {
                     var aux = e.source._data;
                     aux.hasUnreadMsgs = e.source.hasUnreadMsgs;
-                    Alloy.createController("user", aux).getView().open({
+                    $.index.currentUser = Alloy.createController("user", aux);
+                    $.index.currentUser.getView().open({
                         left: 0
+                    });
+                    $.index.currentUser.getView().on("close", function() {
+                        $.index.currentUser = null;
                     });
                 } else {
                     var confirm = Ti.UI.createAlertDialog({
@@ -193,6 +195,12 @@ function Controller() {
     Ti.App.addEventListener("resume", function() {
         typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
     });
+    setInterval(function() {
+        f_callback({
+            from_id: "50edb22f-a7dc-47de-b1c9-2afebca5d2a0",
+            alert: "acho qué?"
+        });
+    }, 10000);
     Ti.App.Properties.setString("current_user_id", null);
     var Cloud = require("cloud");
     Ti.App.Properties.getString("user_id", null) == null ? Ti.UI.createAlertDialog({

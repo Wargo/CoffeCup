@@ -35,6 +35,7 @@ Ti.App.addEventListener('resume', function() {
 });
 
 function f_callback(data) {
+	
 	var bbdd = Ti.App.Properties.getList('data');
 	for (i in bbdd) {
 		if (bbdd[i].id == data.from_id) {
@@ -42,15 +43,15 @@ function f_callback(data) {
 		}
 	}
 	
-	if (data.from_id == Ti.App.Properties.getString('current_user_id', null)) {
+	if ($.index.currentUser && $.index.currentUser.id == data.from_id) {
+		
 		var message = data.alert.replace(current_user.name + ': ', '');
-		var new_row = Alloy.createController('message', {content:message}).getView();
-		var messages = Alloy.CFG.messages;
-		messages.appendRow(new_row);
-		messages.scrollToIndex(messages.data[0].rows.length - 1);
+		$.index.currentUser.receiveNotification(message);
+		
 	} else {
+		
 		LoadNewMsgs($.table);
-		var notify = Ti.UI.createView({
+		var notify = Ti.UI.createWindow({
 			zIndex:150,
 			bottom:'-50dp',
 			height:'50dp',
@@ -68,7 +69,8 @@ function f_callback(data) {
 			color:'#FFF',
 			textAlign:'center'
 		}));
-		$.index.add(notify);
+		//$.index.add(notify);
+		notify.open();
 		notify.animate({bottom:'-5'}, function() {
 			setTimeout(function() {
 				notify.animate({opacity:0});
@@ -76,8 +78,10 @@ function f_callback(data) {
 		});
 		notify.addEventListener('singletap', function() {
 			current_user.hasUnreadMsgs = true;
-			Alloy.createController('user', current_user).getView().open({left:0});
+			$.index.currentUser = Alloy.createController('user', current_user);
+			$.index.currentUser.getView().open({left:0});
 		});
+		
 	}
 }
 
@@ -163,7 +167,13 @@ function setData(data) {
 			if (Ti.App.Properties.getString('user_id', null)) {
 				var aux = e.source._data;
 				aux.hasUnreadMsgs = e.source.hasUnreadMsgs;
-				Alloy.createController('user', aux).getView().open({left:0});
+				$.index.currentUser = Alloy.createController('user', aux);
+				$.index.currentUser.getView().open({left:0});
+				
+				$.index.currentUser.getView().on('close', function(){
+					$.index.currentUser = null;
+				});
+				
 			} else {
 				var confirm = Ti.UI.createAlertDialog({
 					title:L('confirm'),

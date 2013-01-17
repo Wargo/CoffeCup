@@ -367,14 +367,9 @@ function Controller() {
         $.avatar.add($.infoHeader);
     });
     var file = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory + args.id + "_big.jpg");
-    if (file.exists()) {
-        Ti.API.info("existe");
-        $.avatar.image = file.nativePath;
-    } else {
-        Ti.API.info("no existe");
+    if (file.exists()) $.avatar.image = file.nativePath; else {
         var client = Ti.Network.createHTTPClient({
             onload: function() {
-                Ti.API.info("load");
                 $.avatar.image = this.responseData;
                 file.write(this.responseData);
             },
@@ -412,6 +407,14 @@ function Controller() {
     var GetMessages = require("messages");
     GetMessages(args.id, setMessages);
     $.msgsLoader.show();
+    exports.id = args.id;
+    exports.receiveNotification = function(msg) {
+        var row = Alloy.createController("message", {
+            content: msg
+        }).getView();
+        $.messages.appendRow(row);
+        $.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+    };
     $.user.on("swipe", function(e) {
         e.direction == "right" && $.user.close({
             left: "320dp"

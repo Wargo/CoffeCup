@@ -83,6 +83,14 @@ GetMessages(args.id, setMessages);
 
 $.msgsLoader.show();
 
+exports.id = args.id;
+
+exports.receiveNotification = function(msg){
+	var row = Alloy.createController('message', {content:msg}).getView();
+	$.messages.appendRow(row);
+	$.messages.scrollToIndex($.messages.data[0].rows.length - 1);
+}
+
 function setMessages(messagesData) {
 	
 	$.messages.data = [];
