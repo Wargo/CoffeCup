@@ -85,7 +85,11 @@ function f_callback(data) {
 
 Ti.App.Properties.setString('current_user_id', null);
 
-var Cloud = require('cloud');
+if (Ti.Platform.osname === 'android') {
+	var Cloud = require('cloud_android');
+} else {
+	var Cloud = require('cloud');
+}
 
 if (Ti.App.Properties.getString('user_id', null) == null) {
 	Ti.UI.createAlertDialog({

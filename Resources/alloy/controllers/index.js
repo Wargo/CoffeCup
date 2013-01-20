@@ -117,6 +117,7 @@ function Controller() {
                     layout: "horizontal",
                     height: "170dp"
                 });
+                Ti.Platform.osname != "android" && (row.selectionStyle = Ti.UI.iPhone.TableViewCellSelectionStyle.NONE);
                 rows.push(row);
             }
             row.add(user);
@@ -181,6 +182,7 @@ function Controller() {
     $.__views.index.add($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
+    Ti.Platform.osname != "android" && require("ti.viewshadow");
     $.headerTitle.on("doubletap", function() {
         var files = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory), aux = files.getDirectoryListing();
         for (i in aux) {
@@ -196,7 +198,7 @@ function Controller() {
         typeof $.table.data[0] != "undefined" && $.table.data[0].rows.length > 0 && LoadNewMsgs($.table);
     });
     Ti.App.Properties.setString("current_user_id", null);
-    var Cloud = require("cloud");
+    if (Ti.Platform.osname === "android") var Cloud = require("cloud_android"); else var Cloud = require("cloud");
     Ti.App.Properties.getString("user_id", null) == null ? Ti.UI.createAlertDialog({
         title: L("welcome"),
         message: L("welcome_message"),

@@ -10,6 +10,10 @@ MarkAsRead(args.id);
 
 $.loader._loaded = false;
 
+if (Ti.Platform.osname == 'android') {
+	$.messages.animate({opacity:0});
+}
+
 $.user.on('open', function() {
 	Ti.App.Properties.setString('current_user_id', args.id);
 	if ($.loader._loaded == false) {

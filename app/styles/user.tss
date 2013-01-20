@@ -92,9 +92,6 @@
 	backgroundColor:'#9057658D',
 	separatorColor:'transparent'
 },
-'TableViewRow': {
-	opacity:0
-},
 '#loader':{
 	color:'#CCC',
 	font:{fontSize:'13px'}
