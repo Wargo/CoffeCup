@@ -18,7 +18,7 @@ module.exports = function(args, f_confirm) {
 		},
 		timeout:15000
 	});
-	
+	Alloy = require('alloy');
 	client.open('POST', Alloy.CFG.url + '/messages/add');
 	
 	client.send(args);

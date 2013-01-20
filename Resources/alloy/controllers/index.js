@@ -117,7 +117,6 @@ function Controller() {
                     layout: "horizontal",
                     height: "170dp"
                 });
-                Ti.Platform.osname != "android" && (row.selectionStyle = Ti.UI.iPhone.TableViewCellSelectionStyle.NONE);
                 rows.push(row);
             }
             row.add(user);
@@ -182,7 +181,6 @@ function Controller() {
     $.__views.index.add($.__views.table);
     exports.destroy = function() {};
     _.extend($, $.__views);
-    Ti.Platform.osname != "android" && require("ti.viewshadow");
     $.headerTitle.on("doubletap", function() {
         var files = Ti.Filesystem.getFile(Ti.Filesystem.applicationCacheDirectory), aux = files.getDirectoryListing();
         for (i in aux) {

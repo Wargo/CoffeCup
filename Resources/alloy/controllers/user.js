@@ -43,12 +43,13 @@ function Controller() {
     var $ = this, exports = {}, __defers = {};
     $.__views.user = A$(Ti.UI.createWindow({
         backgroundColor: "black",
-        left: "320dp",
-        width: "320dp",
+        fullscreen: !0,
+        navBarHidden: !0,
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
     $.__views.__alloyId2 = A$(Ti.UI.createTableViewRow({
+        opacity: 0,
         height: "100%",
         id: "__alloyId2"
     }), "TableViewRow", null);
@@ -120,7 +121,8 @@ function Controller() {
     }), "View", $.__views.messageSenderArea);
     $.__views.messageSenderArea.add($.__views.send);
     $.__views.sendImage = A$(Ti.UI.createImageView({
-        image: "images/send.png",
+        image: "/images/send.png",
+        width: "32dp",
         id: "sendImage"
     }), "ImageView", $.__views.send);
     $.__views.send.add($.__views.sendImage);
@@ -338,7 +340,7 @@ function Controller() {
     exports.destroy = function() {};
     _.extend($, $.__views);
     var args = arguments[0] || {};
-    args.id == Ti.App.Properties.getString("user_id") && $.messageSenderArea.parent.remove($.messageSenderArea);
+    args.id == Ti.App.Properties.getString("user_id") && $.user.remove($.messageSenderArea);
     var SendMessage = require("addMessage"), MarkAsRead = require("markAsRead");
     MarkAsRead(args.id);
     $.loader._loaded = !1;
@@ -450,8 +452,9 @@ function Controller() {
     $.messageSenderArea.on("swipe", function(e) {
         if (e.direction == "down") {
             $.textarea.enabled = !0;
+            var top = "200dp";
             $.messageSenderArea.animate({
-                top: Ti.Platform.displayCaps.platformHeight - 330 + "dp"
+                top: top
             }, function() {
                 $.messages.animate({
                     opacity: 1
@@ -510,38 +513,6 @@ function Controller() {
             $.prevMsg.text = L("close");
         }
     });
-    if (Ti.Platform.osname != "android") {
-        $.textarea.on("postlayout", function() {
-            $.textarea.setShadow({
-                shadowOffset: {
-                    x: 0,
-                    y: 2
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 2
-            });
-        });
-        $.send.on("postlayout", function() {
-            $.send.setShadow({
-                shadowOffset: {
-                    x: 3,
-                    y: 3
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
-            });
-        });
-        $.messageSender.on("postlayout", function() {
-            $.messageSender.setShadow({
-                shadowOffset: {
-                    x: 0,
-                    y: 3
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
-            });
-        });
-    }
     _.extend($, exports);
 }
 

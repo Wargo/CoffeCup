@@ -56,6 +56,7 @@ module.exports = function(tableView) {
         },
         timeout: 15000
     });
+    Alloy = require("alloy");
     client.open("POST", Alloy.CFG.url + "/messages/unread");
     client.send({
         user_id: Ti.App.Properties.getString("user_id")

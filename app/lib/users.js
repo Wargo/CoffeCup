@@ -19,7 +19,7 @@ module.exports = function(setData, onError) {
 		},
 		timeout:15000
 	});
-	
+	Alloy = require('alloy');
 	client.open('POST', Alloy.CFG.url + '/users/json');
 	
 	client.send({

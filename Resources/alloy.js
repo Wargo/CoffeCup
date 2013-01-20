@@ -24,11 +24,11 @@ exports.M = function(name, modelDesc, migrations) {
         }
     }, extendClass = {};
     migrations && (extendClass.migrations = migrations);
-    _.isFunction(adapter.beforeModelCreate) && (config = adapter.beforeModelCreate(config) || config);
+    _.isFunction(adapter.beforeModelCreate) && (config = adapter.beforeModelCreate(config, name) || config);
     var Model = Backbone.Model.extend(extendObj, extendClass);
     Model.prototype.config = config;
-    _.isFunction(adapter.afterModelCreate) && adapter.afterModelCreate(Model);
     _.isFunction(modelDesc.extendModel) && (Model = modelDesc.extendModel(Model) || Model);
+    _.isFunction(adapter.afterModelCreate) && adapter.afterModelCreate(Model, name);
     return Model;
 };
 
@@ -64,7 +64,7 @@ exports.A = function(t, type, parent) {
             };
             if (!cbs[e]) {
                 cbs[e] = {};
-                al(e, wcb);
+                al.call(t, e, wcb);
             }
             cbs[e][cb] = wcb;
             _.bind(oo, ctx, e, cb, context)();
@@ -76,7 +76,7 @@ exports.A = function(t, type, parent) {
                 delete cbs[e][cb];
                 if (cbs[e].length === 0) {
                     delete cbs[e];
-                    rl(e, f);
+                    rl.call(t, e, f);
                 }
                 f = null;
             }
@@ -126,7 +126,13 @@ exports.createCollection = function(name, args) {
 };
 
 exports.isTablet = function() {
-    return Ti.Platform.osname === "ipad";
+    try {
+        var psc = require("ti.physicalSizeCategory");
+        return psc.physicalSizeCategory === "large" || psc.physicalSizeCategory === "xlarge";
+    } catch (e) {
+        Ti.API.warn("Could not find ti.physicalSizeCategory module, using fallback for Alloy.isTablet");
+        return isTabletFallback();
+    }
 }();
 
 exports.isHandheld = !exports.isTablet;
@@ -149,4 +155,8 @@ exports.Collections.instance = function(name) {
 
 exports.CFG = require("alloy/CFG");
 
-exports.version = "0.3.4";
+exports.Android = {};
+
+exports.Android.menuItemCreateArgs = [ "itemId", "groupId", "title", "order" ];
+
+exports.version = "0.3.6";

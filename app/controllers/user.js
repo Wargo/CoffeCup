@@ -1,7 +1,7 @@
 var args = arguments[0] || {};
 
 if (args.id == Ti.App.Properties.getString('user_id')) {
-	$.messageSenderArea.parent.remove($.messageSenderArea);
+	$.user.remove($.messageSenderArea);
 }
 
 var SendMessage = require('addMessage');
@@ -145,9 +145,14 @@ $.scrollview.on('dragend', function(e) {
 
 $.messageSenderArea.on('swipe', function(e) {
 	if (e.direction == 'down') {
-		//$.messageSenderArea.animate({top:0});
 		$.textarea.enabled = true;
-		$.messageSenderArea.animate({top:(Ti.Platform.displayCaps.platformHeight - 330) + 'dp'}, function() {
+
+		if (Ti.Platform.osname === 'android') {
+			var top = '200dp';
+		} else {
+			var top = (Ti.Platform.displayCaps.platformHeight - 330) + 'dp';
+		}
+		$.messageSenderArea.animate({top:top}, function() {
 			$.messages.animate({opacity:1});
 			$.prevMsg.text = L('close');
 		});

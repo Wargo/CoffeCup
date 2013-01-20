@@ -1,6 +1,10 @@
 
 module.exports = function(f_callback) {
 	
+	if (Ti.Platform.osname == 'android') {
+		return;
+	}
+	
 	var Cloud = require('ti.cloud');
 	var user_device_token 	= Ti.App.Properties.getString("device_token", null);
 	var username = Ti.App.Properties.getString('user_id');

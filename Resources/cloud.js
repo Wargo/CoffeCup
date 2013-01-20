@@ -70,6 +70,5 @@ module.exports = function(f_callback) {
             } else Ti.API.info("Error:\\n" + (e.error && e.message || JSON.stringify(e)));
         });
     }
-    var Cloud = require("ti.cloud"), user_device_token = Ti.App.Properties.getString("device_token", null), username = Ti.App.Properties.getString("user_id"), password = "DKJ3aD8JmV5Nbcd73";
-    getDeviceToken();
+    return;
 };

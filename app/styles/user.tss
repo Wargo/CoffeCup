@@ -2,6 +2,10 @@
 	left:'320dp',
 	width:'320dp'
 },
+".win[platform=android]": {
+	fullscreen:true,
+	navBarHidden:true
+},
 '.infoHeader': {
 	backgroundColor:'#8557658D',
 	height:Ti.UI.SIZE,
@@ -66,7 +70,8 @@
 	borderWidth:1
 },
 '#sendImage': {
-	image:'images/send.png'
+	image:'/images/send.png',
+	width:'32dp'
 },
 '#textarea': {
 	left:'10dp',
@@ -86,6 +91,9 @@
 	bottom:'330dp',
 	backgroundColor:'#9057658D',
 	separatorColor:'transparent'
+},
+'TableViewRow': {
+	opacity:0
 },
 '#loader':{
 	color:'#CCC',
