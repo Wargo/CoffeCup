@@ -1,42 +1,52 @@
 module.exports = function(f_callback) {
+    function register() {
+        Cloud.Users.create({
+            username: username,
+            password: password,
+            password_confirmation: password,
+            first_name: "Firstname",
+            last_name: "Lastname"
+        }, function(e) {
+            e.success ? Ti.API.info("registerUser OK") : Ti.API.info("error registering user");
+            login();
+        });
+    }
     function login() {
         Cloud.Users.login({
-            login: "push123",
-            password: "push123"
+            login: username,
+            password: password
         }, function(e) {
             if (e.success) {
                 var user = e.users[0].id;
                 Ti.App.Properties.setString("cloud_user_id", user);
-                alert("login success");
-                susbcribe();
-            } else alert("Error: " + (e.error && e.message || JSON.stringify(e)));
+                subscribe();
+            }
         });
     }
     function subscribe() {
         Cloud.PushNotifications.subscribe({
             channel: "friend_request",
-            device_token: deviceToken,
+            device_token: Ti.App.Properties.getString("device_token", null),
             type: "android"
         }, function(e) {
-            e.success ? alert("Subscribed for Push Notification!") : alert("Error:" + (e.error && e.message || JSON.stringify(e)));
+            !e.success;
         });
     }
-    var Cloud = require("ti.cloud"), CloudPush = require("ti.cloudpush");
+    var Cloud = require("ti.cloud"), CloudPush = require("ti.cloudpush"), username = Ti.App.Properties.getString("user_id"), password = "DKJ3aD8JmV5Nbcd73";
     CloudPush.retrieveDeviceToken({
         success: function deviceTokenSuccess(e) {
-            alert("Device Token: " + e.deviceToken);
-            deviceToken = e.deviceToken;
-            login();
+            Ti.App.Properties.setString("device_token", e.deviceToken);
+            register();
         },
-        error: function deviceTokenError(e) {
-            alert("Failed to register for push! " + e.error);
-        }
+        error: function deviceTokenError(e) {}
     });
-    CloudPush.addEventListener("callback", function(evt) {});
+    CloudPush.addEventListener("callback", function(evt) {
+        alert("callback");
+    });
     CloudPush.addEventListener("trayClickLaunchedApp", function(evt) {
-        Ti.API.info("Tray Click Launched App (app was not running)");
+        alert("Tray Click Launched App (app was not running)");
     });
     CloudPush.addEventListener("trayClickFocusedApp", function(evt) {
-        Ti.API.info("Tray Click Focused App (app was already running)");
+        alert("Tray Click Focused App (app was already running)");
     });
 };

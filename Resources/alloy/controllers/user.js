@@ -43,8 +43,8 @@ function Controller() {
     var $ = this, exports = {}, __defers = {};
     $.__views.user = A$(Ti.UI.createWindow({
         backgroundColor: "black",
-        left: "320dp",
-        width: "320dp",
+        fullscreen: !0,
+        navBarHidden: !0,
         id: "user"
     }), "Window", null);
     $.addTopLevelView($.__views.user);
@@ -343,7 +343,7 @@ function Controller() {
     var SendMessage = require("addMessage"), MarkAsRead = require("markAsRead");
     MarkAsRead(args.id);
     $.loader._loaded = !1;
-    Ti.Platform.osname == "android" && $.messages.animate({
+    $.messages.animate({
         opacity: 0
     });
     $.user.on("open", function() {
@@ -454,7 +454,7 @@ function Controller() {
     $.messageSenderArea.on("swipe", function(e) {
         if (e.direction == "down") {
             $.textarea.enabled = !0;
-            if (Ti.Platform.osname === "android") var top = "200dp"; else var top = Ti.Platform.displayCaps.platformHeight - 330 + "dp";
+            var top = "200dp";
             $.messageSenderArea.animate({
                 top: top
             }, function() {
@@ -515,38 +515,6 @@ function Controller() {
             $.prevMsg.text = L("close");
         }
     });
-    if (Ti.Platform.osname != "android") {
-        $.textarea.on("postlayout", function() {
-            $.textarea.setShadow({
-                shadowOffset: {
-                    x: 0,
-                    y: 2
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 2
-            });
-        });
-        $.send.on("postlayout", function() {
-            $.send.setShadow({
-                shadowOffset: {
-                    x: 3,
-                    y: 3
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
-            });
-        });
-        $.messageSender.on("postlayout", function() {
-            $.messageSender.setShadow({
-                shadowOffset: {
-                    x: 0,
-                    y: 3
-                },
-                shadowOpacity: 0.3,
-                shadowRadius: 3
-            });
-        });
-    }
     _.extend($, exports);
 }
 

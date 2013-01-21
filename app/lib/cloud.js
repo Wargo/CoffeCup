@@ -2,7 +2,7 @@
 module.exports = function(f_callback) {
 	
 	var Cloud = require('ti.cloud');
-	var user_device_token 	= Ti.App.Properties.getString("device_token", null);
+	var user_device_token = Ti.App.Properties.getString("device_token", null);
 	var username = Ti.App.Properties.getString('user_id');
 	var password = 'DKJ3aD8JmV5Nbcd73';
 	
